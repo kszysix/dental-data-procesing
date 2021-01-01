@@ -2,29 +2,29 @@
 # HOW TO START:
 # https://flask.palletsprojects.com/en/1.0.x/quickstart/
 #
-#cd C:\aakris\repos\dental\test_env
-#set FLASK_APP = hello.py
-#set FLASK_DEBUG=1
-#flask run
+# cd C:\aakris\repos\dental\test_env
+# set FLASK_APP = hello.py
+# set FLASK_DEBUG=1
+# flask run
 #
 #
 # PostgreSQL server port: 5432
 #
 import speech_recognition as sr
 import pyaudio
-# from playsound import playsound
-import simpleaudio as sa
 import sounddevice as sd
 import soundfile as sf
 
 import re
 import json
 
+import pymongo
+
+from bson.json_util import dumps, loads 
+
 from flask import Flask, jsonify,make_response
+from flask import request
 from flask_cors import CORS
-
-import mysql.connector
-
 
 app = Flask(__name__)
 CORS(app)
@@ -74,6 +74,17 @@ def mic():
 		data, fs = sf.read(filename, dtype='float32')  
 		sd.play(data, fs,device=8)
 		status = sd.wait()
+	elif(response["next"] == 1):
+		myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+		dblist = myclient.list_database_names()
+		print(dblist)
+		if "mydatabase" in dblist:
+		 	print("The database exists.")
+		else:
+			mydb = myclient["mydatabase"]
+			mycol = mydb["customers"]
+			mydict = { "name": "John", "address": "Highway 37" }
+			x = mycol.insert_one(mydict)
 	return response
 
 
@@ -130,77 +141,18 @@ def createCommandJson(command):
 		return json.dumps(response)
 
 
-	# while i < len(command) and command[i] == " ":
-	# 	i = i + 1 
-	# if i < len(command):
-	# 	return json.dumps(repeatResponse)
+@app.route('/getPersonData', methods=['POST'])
+def getPersonData():
+	myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+	dblist = myclient.list_database_names()
+	mydb = myclient["mydatabase"]
+	mycol = mydb["customers"]
+	pesel = str(request.data.decode('UTF-8'))
+	myquery = { "personalDetails.pesel": pesel }
 
-	# if re.match('[1-8]', command[i]) and re.match('[0-8]', command[i+1]):
-	# 	toothId = command[i]+command[i+1]
-	# 	i = i + 2
-	# else:
-	# 	return "repeat"
-	# if i < len(command):
-	# 	return json.dumps(repeatResponse)
-	# while i < len(command) and command[i] == " ":
-	# 	i = i + 1 
-	# if i < len(command):
-	# 	return json.dumps(repeatResponse)
-	# if re.match('[a-fA-F]', command[i]):
-	# 	toothPart = str(command[i]).upper()
-	# 	i = i + 1
-	# else:
-	# 	return "repeat"
-	# if i < len(command):
-	# 	return json.dumps(repeatResponse)	
-	# while command[i] == " ":
-	# 	i = i + 1
-	# if i < len(command):
-	# 	return json.dumps(repeatResponse)
+	cursor = mycol.find(myquery)
+	list_cur = list(cursor)
+	a = dumps(list_cur, indent = 2) 
+	b = json.loads(str(a))
 
-	# toothAilment = ""
-	# while i < len(command) and re.match('[a-zA-Z,ó,ż,ź,ę,ą,ł,ń,ś]', command[i]):
-	# 	toothAilment = toothAilment + command[i]
-	# 	i = i + 1 
-	# if toothAilment == "":
-	# 	return "repeat"
-
-
-	# response = {
-	# 	'command':command,
-	# 	'toothId':toothId,
-	# 	'toothPart':toothPart,
-	# 	'toothAilment':toothAilment,
-	# 	'next':1
-	# }
-	# return json.dumps(response)
-
-
-@app.route('/connectToDatabase', methods=['GET'])
-def connectToDatabase():
-	mydb = mysql.connector.connect(
-	host="127.0.0.1",
-	user="root",
-	password="admin",
-	database="dental"
-	)
-	print(mydb)
-	app.logger.info("Connected to database Dental.")
-	return {"log":"Connected to database Dental."}
-
-
-@app.route('/createTable', methods=['POST'])
-def createTable():
-	
-	mycursor = mydb.cursor()
-	mycursor.execute("CREATE DATABASE test")
-
-
-
-
-@app.route('/addElement', methods=['GET'])
-def addElement():
-	
-	mycursor = mydb.cursor()
-	mycursor.execute("CREATE DATABASE test")
-
+	return b[0]

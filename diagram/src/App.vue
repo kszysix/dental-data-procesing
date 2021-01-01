@@ -4,7 +4,17 @@
     <b-tabs content-class="mt-3">
 
       <b-tab title="Dane osobowe" active>
-        <personal-form/>
+        <div class="col sm">
+          <label for="person-pesel">Podaj pesel:</label>
+          <b-form-input id="person-pesel" ref="person-pesel" type="text"></b-form-input>
+        </div>
+        <div>
+          <b-button v-on:click="getPersonData()">Get data!</b-button>
+        </div> 
+        <personal-form ref="personal-form"/>
+        <div>
+          <b-button v-on:click="savePersonData()">Save!</b-button>
+        </div> 
       </b-tab>
 
       <b-tab title="Diagram zębowy">
@@ -77,6 +87,34 @@ export default {
   },
 
   methods: {
+    getPersonData(){
+      var pesel = this.$refs["person-pesel"].localValue
+      if(pesel){
+        var request = new XMLHttpRequest();
+        request.open('POST', 'http://127.0.0.1:5000/getPersonData', false);
+        request.send(pesel);
+        var person = JSON.parse(request.response);
+
+        this.$refs["personal-form"].getPersonData(request.response)
+        // zęby stałe
+        var i = 1;
+        var teeth = person.permanentTeeth;
+        for(;i<5;i++){
+          var j = 1;
+          for(;j<9;j++){
+            var id = i.toString()+j.toString();
+            var ref = "tooth-" + id;
+            this.$refs[ref].setColor('A', teeth[id]['A']);
+            this.$refs[ref].setColor('B', teeth[id]['B']);
+            this.$refs[ref].setColor('C', teeth[id]['C']);
+            this.$refs[ref].setColor('D', teeth[id]['D']);
+            this.$refs[ref].setColor('E', teeth[id]['E']);
+          }
+        }
+
+        // TODO : zęby mleczne
+      }
+    },
     getMicCommand(){
       var request = new XMLHttpRequest();
       request.open('GET', 'http://127.0.0.1:5000/mic', false);
@@ -86,8 +124,7 @@ export default {
 
     useCommand(obj){
       var ref = "tooth-" + obj.toothId;
-      var tt = this.$refs[ref];
-      tt.setColor(obj.toothPart, obj.toothAilment);
+      this.$refs[ref].setColor(obj.toothPart, obj.toothAilment);
     },
 
   	mic() {

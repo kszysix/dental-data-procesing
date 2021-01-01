@@ -48,7 +48,7 @@ export default {
     props: ['shape'],
     data: function(){
         return {
-            colors: ["lightseagreen", "lightsalmon", "darkslategray", "peru", "peachpuff", "gray"],
+            colors: ["lightseagreen", "lightsalmon", "darkslategray", "peru", "peachpuff", "gray","internationalorange"],
             n1: 0,
             n2: 0,
             n3: 0,
@@ -110,7 +110,7 @@ export default {
                     newColor = 4
                     break;
                 default:
-                    newColor = 'gray'
+                    newColor = 5
             }
 
 			switch(toothPart) {
