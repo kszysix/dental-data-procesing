@@ -46,7 +46,7 @@ import { SQUARE_TOOTH_SHAPE, RECTANGLE_TOOTH_SHAPE } from './../assets/dentalDat
 export default {
     name: 'tooth',
     props: ['shape'],
-    data() {
+    data: function(){
         return {
             colors: ["lightseagreen", "lightsalmon", "darkslategray", "peru", "peachpuff", "gray"],
             n1: 0,
@@ -62,29 +62,84 @@ export default {
         if (this.shape == 'square') this.toothShape = SQUARE_TOOTH_SHAPE
         else this.toothShape = RECTANGLE_TOOTH_SHAPE
     },
+
     methods: {
         changecolor(tooth) {
             if (tooth == 'A') {
                 this.color.A = this.colors[this.n1]
-                this.n1 = (this.n1 + 1) % 6
+                this.n1 = (this.n1 + 1) % this.colors.length
             }
             else if (tooth == 'B') {
                 this.color.B = this.colors[this.n2]
-                this.n2 = (this.n2 + 1) % 6
+                this.n2 = (this.n2 + 1) % this.colors.length
             }
             else if (tooth == 'C') {
                 this.color.C = this.colors[this.n3]
-                this.n3 = (this.n3 + 1) % 6
+                this.n3 = (this.n3 + 1) % this.colors.length
             }
             else if (tooth == 'D') {
                 this.color.D = this.colors[this.n4]
-                this.n4 = (this.n4 + 1) % 6
+                this.n4 = (this.n4 + 1) % this.colors.length
             }
             else if (tooth == 'E') {
                 this.color.E = this.colors[this.n5]
-                this.n5 = (this.n5 + 1) % 6
+                this.n5 = (this.n5 + 1) % this.colors.length
             }
         },
+		
+		setColor(toothPart, toothAilment){
+            var newColor = 'gray'
+
+            switch(toothAilment){
+                case 'wypełnienie':
+                    newColor = 0
+                    break;
+                case 'próchnica':
+                    newColor = 1
+                    break;
+                case 'usunięty':
+                    newColor = 2
+                    break;
+                case 'proteza':
+                    newColor = 3
+                    break;
+                case 'przęsło':
+                    newColor = 4
+                    break;
+                case 'niewyrżnięty':
+                    newColor = 4
+                    break;
+                default:
+                    newColor = 'gray'
+            }
+
+			switch(toothPart) {
+                case 'A':
+                    this.color.A = this.colors[newColor]
+                    break;
+                case 'B':
+                    this.color.B = this.colors[newColor]
+                    break;
+                case 'C':
+                    this.color.C = this.colors[newColor]
+                    break;
+                case 'D':
+                    this.color.D = this.colors[newColor]
+                    break;
+                case 'E':
+                    this.color.E = this.colors[newColor]
+                    break;
+                case 'F':
+                    this.color.A = this.colors[newColor]
+                    this.color.B = this.colors[newColor]
+                    this.color.C = this.colors[newColor]
+                    this.color.D = this.colors[newColor]
+                    this.color.E = this.colors[newColor]
+                    break;
+                default:
+                    this.color.E = this.colors[3]
+                }
+		}
     },
 }
 
