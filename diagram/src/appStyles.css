@@ -41,6 +41,12 @@
   margin:auto
 }
 
+.genders {
+  display: flex;
+  margin-right:66%;
+  margin-left:1%;
+  justify-content: space-between;  
+}
 /* .normal-size-tooth :first-child svg {
 height: 10px
 } */

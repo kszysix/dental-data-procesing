@@ -4,13 +4,15 @@
     <b-tabs content-class="mt-3">
 
       <b-tab title="Dane osobowe" active>
+        
         <div class="col sm">
           <label for="person-pesel">Podaj pesel:</label>
-          <b-form-input id="person-pesel" ref="person-pesel" type="text"></b-form-input>
+          <b-form-input width="30px" id="person-pesel" ref="person-pesel" type="text"></b-form-input>
         </div>
         <div>
           <b-button v-on:click="getPersonData()">Get data!</b-button>
-        </div> 
+        </div>
+
         <personal-form ref="personal-form"/>
         <div>
           <b-button v-on:click="savePersonData()">Save!</b-button>
