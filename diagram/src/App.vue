@@ -7,15 +7,17 @@
         
         <div class="col sm">
           <label for="person-pesel">Podaj pesel:</label>
-          <b-form-input width="30px" id="person-pesel" ref="person-pesel" type="text"></b-form-input>
+          <b-form-input id="person-pesel" ref="person-pesel" v-model="personPesel" type="text" :state="personPeselState"></b-form-input>
         </div>
         <div>
-          <b-button v-on:click="getPersonData()">Get data!</b-button>
+          <b-button v-on:click="showPersonData()">Wybierz osobę</b-button>
+          <p id="notExists" v-if="notExists">Nie ma takiego PESELu w bazie.</p>
         </div>
 
         <personal-form ref="personal-form"/>
+
         <div>
-          <b-button v-on:click="savePersonData()">Save!</b-button>
+          <b-button v-on:click="savePersonData()">Zapisz dane</b-button>
         </div> 
       </b-tab>
 
@@ -84,20 +86,66 @@ export default {
 
   data() {
     return {
-
+      personPesel: null,
+      notExists: false
+    }
+  },
+  computed:{
+    personPeselState(){
+      if(this.personPesel){
+          return this.personPesel.length == 11 ? true : false;
+      }else{
+          return null;
+      }
     }
   },
 
   methods: {
-    getPersonData(){
-      var pesel = this.$refs["person-pesel"].localValue
-      if(pesel){
+    savePersonData(){
+      var person = {};
+      var personalDetails = this.$refs["personal-form"].savePersonalDetails();
+      var contactDetails = this.$refs["personal-form"].saveContactDetails();
+      person.personalDetails = personalDetails;
+      person.contactDetails = contactDetails;
+
+      var permanentTeeth = {}
+      for(var i = 1;i<5;i++){
+        for(var j = 1;j<9;j++){
+          var id = i.toString()+j.toString();
+          var ref = "tooth-" + id;
+          permanentTeeth[id] = this.$refs[ref].saveTooth();
+
+        }
+      }
+      person.permanentTeeth = permanentTeeth;
+
+      var primaryTeeth = {};
+      person.primaryTeeth = primaryTeeth;
+
+      var request = new XMLHttpRequest();
+      request.open('POST', 'http://127.0.0.1:5000/savePersonData', false);
+      request.send(JSON.stringify(person));
+
+      var confirmation = request.response;
+    },
+
+    showPersonData(){
+      // TODO v-modal
+      // var pesel = this.$refs["person-pesel"].localValue
+      if(this.personPeselState){
         var request = new XMLHttpRequest();
         request.open('POST', 'http://127.0.0.1:5000/getPersonData', false);
-        request.send(pesel);
+        request.send(this.personPesel);
+        if(request.response == "0"){
+          console.log("Not exists")
+          this.notExists = true;
+          return;
+        }else{
+          this.notExists = false;
+        }
         var person = JSON.parse(request.response);
 
-        this.$refs["personal-form"].getPersonData(request.response)
+        this.$refs["personal-form"].showPersonData(request.response)
         // zęby stałe
         var i = 1;
         var teeth = person.permanentTeeth;
@@ -117,6 +165,7 @@ export default {
         // TODO : zęby mleczne
       }
     },
+
     getMicCommand(){
       var request = new XMLHttpRequest();
       request.open('GET', 'http://127.0.0.1:5000/mic', false);

@@ -129,7 +129,7 @@ export default {
         }
     },
     methods:{
-        getPersonData(person){
+        showPersonData(person){
             person = JSON.parse(person);
             this.firstName = person.personalDetails.firstName;
             this.secondName = person.personalDetails.secondName;
@@ -147,8 +147,35 @@ export default {
             this.zipCode = person.contactDetails.zipCode;
             this.city = person.contactDetails.city;
         },
-        savePersonData(){
+        savePersonalDetails(){
+            if(this.firstNameState && this.surnameState && this.peselState){
+                var jsonPerson = {};
+                jsonPerson.firstName = this.firstName;
+                jsonPerson.secondName = this.secondName;
+                jsonPerson.surname = this.surname;
+                jsonPerson.birthDate = this.birthDate;
+                jsonPerson.pesel = this.pesel;
+                jsonPerson.gender = this.gender;
+                return jsonPerson;
+            }else{
+                return null;
+            }
+        },
+        saveContactDetails(){
+            if(this.firstNameState && this.surnameState && this.peselState){
+                var jsonPerson = {};
+                jsonPerson.phoneNumber = this.phoneNumber;
+                jsonPerson.email = this.email;
 
+                jsonPerson.street = this.street;
+                jsonPerson.streetNumber = this.streetNumber;
+                jsonPerson.boxNumber = this.boxNumber;
+                jsonPerson.zipCode = this.zipCode;
+                jsonPerson.city = this.city;
+                return jsonPerson;
+            }else{
+                return null;
+            }
         }
     }
 }

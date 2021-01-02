@@ -48,13 +48,15 @@ export default {
     props: ['shape'],
     data: function(){
         return {
-            colors: ["lightseagreen", "lightsalmon", "darkslategray", "peru", "peachpuff", "gray","internationalorange"],
-            n1: 0,
-            n2: 0,
-            n3: 0,
-            n4: 0,
-            n5: 0,
+            colors: ["gray","lightseagreen", "lightsalmon", "darkslategray", "peru", "peachpuff", "internationalorange"],
+            ailments: [null,"wypełnienie","próchnica","usunięty","proteza","przęsło","niewyrżnięty"],
+            n1: 1,
+            n2: 1,
+            n3: 1,
+            n4: 1,
+            n5: 1,
             color: { A: 'gray', B: 'gray', C: 'gray', D: 'gray', E: 'gray' },
+            ailment: { A: null, B: null, C: null, D:null, E:null},
             toothShape: null
         }
     },
@@ -64,80 +66,99 @@ export default {
     },
 
     methods: {
+        saveTooth(){
+            return this.ailment;
+        },
+
         changecolor(tooth) {
             if (tooth == 'A') {
                 this.color.A = this.colors[this.n1]
+                this.ailment.A = this.ailments[this.n1];
                 this.n1 = (this.n1 + 1) % this.colors.length
             }
             else if (tooth == 'B') {
                 this.color.B = this.colors[this.n2]
+                this.ailment.B = this.ailments[this.n2];
                 this.n2 = (this.n2 + 1) % this.colors.length
             }
             else if (tooth == 'C') {
                 this.color.C = this.colors[this.n3]
+                this.ailment.C = this.ailments[this.n3];
                 this.n3 = (this.n3 + 1) % this.colors.length
             }
             else if (tooth == 'D') {
                 this.color.D = this.colors[this.n4]
+                this.ailment.D = this.ailments[this.n4];
                 this.n4 = (this.n4 + 1) % this.colors.length
             }
             else if (tooth == 'E') {
                 this.color.E = this.colors[this.n5]
+                this.ailment.E = this.ailments[this.n5];
                 this.n5 = (this.n5 + 1) % this.colors.length
             }
         },
 		
 		setColor(toothPart, toothAilment){
-            var newColor = 'gray'
+            var newColor = 0;
 
             switch(toothAilment){
-                case 'wypełnienie':
-                    newColor = 0
+                case this.ailments[1]:
+                    newColor = 1;
                     break;
-                case 'próchnica':
-                    newColor = 1
+                case this.ailments[2]:
+                    newColor = 2;
                     break;
-                case 'usunięty':
-                    newColor = 2
+                case this.ailments[3]:
+                    newColor = 3;
                     break;
-                case 'proteza':
-                    newColor = 3
+                case this.ailments[4]:
+                    newColor = 4;
                     break;
-                case 'przęsło':
-                    newColor = 4
+                case this.ailments[5]:
+                    newColor = 5;
                     break;
-                case 'niewyrżnięty':
-                    newColor = 4
+                case this.ailments[6]:
+                    newColor = 6;
                     break;
                 default:
-                    newColor = 5
+                    newColor = 0;
             }
 
 			switch(toothPart) {
                 case 'A':
-                    this.color.A = this.colors[newColor]
+                    this.color.A = this.colors[newColor];
+                    this.ailment.A = this.ailments[newColor];
                     break;
                 case 'B':
-                    this.color.B = this.colors[newColor]
+                    this.color.B = this.colors[newColor];
+                    this.ailment.B = this.ailments[newColor];
                     break;
                 case 'C':
-                    this.color.C = this.colors[newColor]
+                    this.color.C = this.colors[newColor];
+                    this.ailment.C = this.ailments[newColor];
                     break;
                 case 'D':
-                    this.color.D = this.colors[newColor]
+                    this.color.D = this.colors[newColor];
+                    this.ailment.D = this.ailments[newColor];
                     break;
                 case 'E':
-                    this.color.E = this.colors[newColor]
+                    this.color.E = this.colors[newColor];
+                    this.ailment.E = this.ailments[newColor];
                     break;
                 case 'F':
-                    this.color.A = this.colors[newColor]
-                    this.color.B = this.colors[newColor]
-                    this.color.C = this.colors[newColor]
-                    this.color.D = this.colors[newColor]
-                    this.color.E = this.colors[newColor]
+                    this.color.A = this.colors[newColor];
+                    this.color.B = this.colors[newColor];
+                    this.color.C = this.colors[newColor];
+                    this.color.D = this.colors[newColor];
+                    this.color.E = this.colors[newColor];
+                    this.ailment.A = this.ailments[newColor];
+                    this.ailment.B = this.ailments[newColor];
+                    this.ailment.C = this.ailments[newColor];
+                    this.ailment.D = this.ailments[newColor];
+                    this.ailment.E = this.ailments[newColor];
                     break;
                 default:
-                    this.color.E = this.colors[3]
+                    
                 }
 		}
     },

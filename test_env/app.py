@@ -30,10 +30,6 @@ app = Flask(__name__)
 CORS(app)
 
 
-
-# mySQL:
-
-
 @app.route('/mic', methods=['GET'])
 def mic():
 	r = sr.Recognizer()
@@ -149,10 +145,35 @@ def getPersonData():
 	mycol = mydb["customers"]
 	pesel = str(request.data.decode('UTF-8'))
 	myquery = { "personalDetails.pesel": pesel }
+	exist = mycol.find(myquery).count() > 0
+	if(exist):
+		cursor = mycol.find(myquery)
+		list_cur = list(cursor)
+		a = dumps(list_cur, indent = 2) 
+		b = json.loads(str(a))
+		return b[0]
+	else:
+		return "0"
 
+
+@app.route('/savePersonData', methods=['POST'])
+def getSaveData():
+	myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+	dblist = myclient.list_database_names()
+	mydb = myclient["mydatabase"]
+	mycol = mydb["customers"]
+
+	person = request.data.decode('UTF-8')
+	person = json.loads(person)
+
+	myquery = { "personalDetails.pesel": person["personalDetails"]["pesel"] }
 	cursor = mycol.find(myquery)
-	list_cur = list(cursor)
-	a = dumps(list_cur, indent = 2) 
-	b = json.loads(str(a))
+	duplicated = (mycol.find(myquery).count()) > 0
 
-	return b[0]
+	if(duplicated):
+		mycol.update_one(myquery, {"$set": person}, upsert=False)
+	else:
+		mycol.insert_one(person)
+	
+
+	return "conf"
