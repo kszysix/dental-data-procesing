@@ -2,17 +2,17 @@ README
 
 1. Flask (python 3):
 
-  > pip install Flask
+  \> pip install Flask
   
-  > pip install flask-cors
+  \> pip install flask-cors
   
-  > cd \dental-data-procesing\test_env
+  \> cd \dental-data-procesing\test_env
   
-  > set FLASK_APP = app.py
+  \> set FLASK_APP = app.py
   
-  > set FLASK_DEBUG = 1
+  \> set FLASK_DEBUG = 1
   
-  > flask run
+  \> flask run
   
 2. MongoDB:
 
@@ -22,19 +22,19 @@ README
   
 3. Python libraries:
 
-  > pip install speech_recognition
+  \> pip install speech_recognition
   
-  > pip install sounddevice
+  \> pip install sounddevice
   
-  > pip install soundfile
+  \> pip install soundfile
   
-  > pip install re
+  \> pip install re
   
-  > pip install json
+  \> pip install json
   
-  > pip install pymongo
+  \> pip install pymongo
   
-  > pip install pipwin
+  \> pip install pipwin
   
-  > pipwin install pyaudio
+  \> pipwin install pyaudio
   
