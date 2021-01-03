@@ -29,10 +29,23 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-
+# 	@ - in progress
 #	TODO:
-#	1. Osobna funkcja do łączenia z mongo
-#	2. 
+#
+#	0. PRACA PISEMNA
+#
+#	1. Osobna funkcja do łączenia z mongo + walidacja jeśli coś nie istnieje?
+# @ 2. Zapis przez mikrofon w czasie rzeczywistym 
+#	3. Zęby mleczne
+#	4. Opis numeryczny zębów - front
+#	5. Legenda chorób - front
+#	6. XMLHttp - deprecated - backend
+#	7. README.md - jak uruchomić aplikację - github
+#	8. Przenoszenie bazy mongo
+#	9. Walidacja połączenia z Flask'iem - front
+#	10. Dodawanie komend przez usera
+#	11. Nazewnictwo powierzchni zęba?
+#	12. 
 
 
 
