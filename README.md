@@ -1,6 +1,6 @@
-#README
+# README
 
-##1. Flask (python 3):
+## 1. Flask (python 3):
 
     > pip install Flask
   
@@ -14,13 +14,13 @@
   
     > flask run
   
-##2. MongoDB:
+## 2. MongoDB:
 
   > Download MongoDB Commutnity Server: https://www.mongodb.com/try/download/community
   
   > Install MongoDB Commutnity Server and Robo3T, follow: https://stackoverflow.com/questions/20796714/how-do-i-start-mongo-db-from-windows
   
-##3. Python libraries:
+## 3. Python libraries:
 
     > pip install speech_recognition
   
