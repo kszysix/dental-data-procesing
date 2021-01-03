@@ -30,22 +30,27 @@ app = Flask(__name__)
 CORS(app)
 
 
+#	TODO:
+#	1. Osobna funkcja do łączenia z mongo
+#	2. 
+
+
+
 @app.route('/mic', methods=['GET'])
 def mic():
 	r = sr.Recognizer()
 	with sr.Microphone(device_index=3) as source:
 		print("Say something!")
-		# print (sd.query_devices())
 
 		filename = 'startMic.wav'
 		data, fs = sf.read(filename, dtype='float32')  
-		sd.play(data, fs,device=8)
+		sd.play(data, fs)
 
 		audio = r.listen(source)
 
 		filename = 'endMic.wav'
 		data, fs = sf.read(filename, dtype='float32')  
-		sd.play(data, fs,device=8)
+		sd.play(data, fs)
 
 	response = {
 		'command': 'Problem with Google Speech Recognition.',
@@ -68,31 +73,22 @@ def mic():
 	if(response["next"] == 2):
 		filename = 'repeat.wav'
 		data, fs = sf.read(filename, dtype='float32')  
-		sd.play(data, fs,device=8)
+		sd.play(data, fs)
 		status = sd.wait()
-	elif(response["next"] == 1):
-		myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-		dblist = myclient.list_database_names()
-		print(dblist)
-		if "mydatabase" in dblist:
-		 	print("The database exists.")
-		else:
-			mydb = myclient["mydatabase"]
-			mycol = mydb["customers"]
-			mydict = { "name": "John", "address": "Highway 37" }
-			x = mycol.insert_one(mydict)
+
 	return response
 
 
 def createCommandJson(command):
-	if(command == "stop"):
-		response = {
-		'command':command,
+	response = {
+		'command': command,
 		'toothId':0,
 		'toothPart':0,
 		'toothAilment':0,
-		'next':0
-		}
+		'next':2
+	}
+	if(command == "stop"):
+		response["next"] = 0
 		return json.dumps(response)
 
 	i = 0
@@ -112,28 +108,41 @@ def createCommandJson(command):
 			toothAilment = toothAilment + command[i]
 		i = i + 1 
 
-	# TODO:
-	# Sprawdzanie poprawności 'toothAilment' z bazą danych
+
+	myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+	dblist = myclient.list_database_names()
+	mydb = myclient["mydatabase"]
+	mycol = mydb["parameters"]
+
+	myquery = { "name": "ailments" }
+	exist = mycol.find(myquery).count() > 0
+	if(exist):
+		cursor = mycol.find(myquery)
+		list_cur = list(cursor)
+		a = dumps(list_cur, indent = 2) 
+		b = json.loads(str(a))
+		ailmentExists = False
+		for ailment in b[0]["ailments"]:
+			if(ailment == toothAilment):
+				ailmentExists = True
+		if(not ailmentExists):
+			toothAilment = ""
+	else:
+		print("Error: can't find parameter in mongo database")
+		toothAilment = ""
+
 
 	if (len(toothId) == 2 and
 		len(toothPart) == 1 and
 		len(toothAilment) > 4):
-		response = {
-			'command':command,
-			'toothId':toothId,
-			'toothPart':toothPart,
-			'toothAilment':toothAilment,
-			'next':1
-		}
+		response["next"] = 1
+		response["command"] = command
+		response["toothId"] = toothId
+		response["toothPart"] = toothPart
+		response["toothAilment"] = toothAilment
 		return json.dumps(response)
 	else:
-		response = {
-			'command': command,
-			'toothId':0,
-			'toothPart':0,
-			'toothAilment':0,
-			'next':2
-		}
+		response["next"] = 2
 		return json.dumps(response)
 
 
@@ -159,7 +168,6 @@ def getPersonData():
 @app.route('/savePersonData', methods=['POST'])
 def getSaveData():
 	myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-	dblist = myclient.list_database_names()
 	mydb = myclient["mydatabase"]
 	mycol = mydb["customers"]
 

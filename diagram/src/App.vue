@@ -17,6 +17,8 @@
         <personal-form ref="personal-form"/>
 
         <div>
+          <p id="saveState" v-if="cannotSaveState">Nie zapisano danych - dane niekompletne.</p>
+          <p id="saveState" v-if="confirmSaveState">Zapisano dane do bazy.</p>
           <b-button v-on:click="savePersonData()">Zapisz dane</b-button>
         </div> 
       </b-tab>
@@ -87,7 +89,9 @@ export default {
   data() {
     return {
       personPesel: null,
-      notExists: false
+      notExists: false,
+      cannotSaveState: false,
+      confirmSaveState: false
     }
   },
   computed:{
@@ -104,6 +108,14 @@ export default {
     savePersonData(){
       var person = {};
       var personalDetails = this.$refs["personal-form"].savePersonalDetails();
+      if(personalDetails == null){
+        this.cannotSaveState = true;
+        this.confirmSaveState = false;
+        return;
+      }else{
+        this.cannotSaveState = false;
+        this.confirmSaveState = true;
+      }
       var contactDetails = this.$refs["personal-form"].saveContactDetails();
       person.personalDetails = personalDetails;
       person.contactDetails = contactDetails;
@@ -130,14 +142,14 @@ export default {
     },
 
     showPersonData(){
-      // TODO v-modal
-      // var pesel = this.$refs["person-pesel"].localValue
+      this.cannotSaveState = false;
+      this.confirmSaveState = false;
       if(this.personPeselState){
         var request = new XMLHttpRequest();
         request.open('POST', 'http://127.0.0.1:5000/getPersonData', false);
         request.send(this.personPesel);
         if(request.response == "0"){
-          console.log("Not exists")
+          console.log("Pesel: "+this.personPesel+" does not exist in mongoDatabase.")
           this.notExists = true;
           return;
         }else{
