@@ -1,0 +1,191 @@
+<template>
+<div>
+    <label class='text-left mt-3 ml-3'>{{ pesel }}</label>
+    <div class='mt-2 text-right mr-5'>
+        <b-form-radio-group
+            v-model="selected"
+            :options="options"
+            class="mb-3"
+            size=""
+            value-field="item"
+            text-field="name"
+            disabled-field="notEnabled">
+        </b-form-radio-group>
+        <div class='dental-diagram' v-if="selected == 'adultTeeth'">
+            <div class="row mt-3 text-center tooth-row">
+
+                <tooth ref="tooth-18" tooth-pos='1' tooth-id='8' shape='square'/>
+                <tooth ref="tooth-17" tooth-pos='1' tooth-id='7' shape='square'/>
+                <tooth ref="tooth-16" tooth-pos='1' tooth-id='6' shape='square'/>
+                <tooth ref="tooth-15" tooth-pos='1' tooth-id='5' shape='square'/>
+                <tooth ref="tooth-14" tooth-pos='1' tooth-id='4' shape='square'/>
+                <tooth ref="tooth-13" tooth-pos='1' tooth-id='3' shape='rectangle'/>
+                <tooth ref="tooth-12" tooth-pos='1' tooth-id='2' shape='rectangle'/>
+                <tooth ref="tooth-11" tooth-pos='1' tooth-id='1' shape='rectangle'/>
+
+                <tooth ref="tooth-21" tooth-pos='2' tooth-id='1' shape='rectangle'/>
+                <tooth ref="tooth-22" tooth-pos='2' tooth-id='2' shape='rectangle'/>
+                <tooth ref="tooth-23" tooth-pos='2' tooth-id='3' shape='rectangle'/>
+                <tooth ref="tooth-24" tooth-pos='2' tooth-id='4' shape='square'/>
+                <tooth ref="tooth-25" tooth-pos='2' tooth-id='5' shape='square'/>
+                <tooth ref="tooth-26" tooth-pos='2' tooth-id='6' shape='square'/>
+                <tooth ref="tooth-27" tooth-pos='2' tooth-id='7' shape='square'/>
+                <tooth ref="tooth-28" tooth-pos='2' tooth-id='8' shape='square'/>
+
+            </div>
+            <div class="row mt-3 text-center tooth-row">
+
+                <tooth ref="tooth-48" tooth-pos='4' tooth-id='8' shape='square'/>
+                <tooth ref="tooth-47" tooth-pos='4' tooth-id='7' shape='square'/>
+                <tooth ref="tooth-46" tooth-pos='4' tooth-id='6' shape='square'/>
+                <tooth ref="tooth-45" tooth-pos='4' tooth-id='5' shape='square'/>
+                <tooth ref="tooth-44" tooth-pos='4' tooth-id='4' shape='square'/>
+                <tooth ref="tooth-43" tooth-pos='4' tooth-id='3' shape='rectangle'/>
+                <tooth ref="tooth-42" tooth-pos='4' tooth-id='2' shape='rectangle'/>
+                <tooth ref="tooth-41" tooth-pos='4' tooth-id='1' shape='rectangle'/>
+
+                <tooth ref="tooth-31" tooth-pos='3' tooth-id='1' shape='rectangle'/>
+                <tooth ref="tooth-32" tooth-pos='3' tooth-id='2' shape='rectangle'/>
+                <tooth ref="tooth-33" tooth-pos='3' tooth-id='3' shape='rectangle'/>
+                <tooth ref="tooth-34" tooth-pos='3' tooth-id='4' shape='square'/>
+                <tooth ref="tooth-35" tooth-pos='3' tooth-id='5' shape='square'/>
+                <tooth ref="tooth-36" tooth-pos='3' tooth-id='6' shape='square'/>
+                <tooth ref="tooth-37" tooth-pos='3' tooth-id='7' shape='square'/>
+                <tooth ref="tooth-38" tooth-pos='3' tooth-id='8' shape='square'/>
+
+            </div>
+        </div>
+        <div v-if="selected == 'babyTeeth'">
+            <div class="row mt-3 text-center tooth-row">
+
+                <tooth ref="tooth-15" tooth-pos='1' tooth-id='5' shape='square'/>
+                <tooth ref="tooth-14" tooth-pos='1' tooth-id='4' shape='square'/>
+                <tooth ref="tooth-13" tooth-pos='1' tooth-id='3' shape='rectangle'/>
+                <tooth ref="tooth-12" tooth-pos='1' tooth-id='2' shape='rectangle'/>
+                <tooth ref="tooth-11" tooth-pos='1' tooth-id='1' shape='rectangle'/>
+
+                <tooth ref="tooth-21" tooth-pos='2' tooth-id='1' shape='rectangle'/>
+                <tooth ref="tooth-22" tooth-pos='2' tooth-id='2' shape='rectangle'/>
+                <tooth ref="tooth-23" tooth-pos='2' tooth-id='3' shape='rectangle'/>
+                <tooth ref="tooth-24" tooth-pos='2' tooth-id='4' shape='square'/>
+                <tooth ref="tooth-25" tooth-pos='2' tooth-id='5' shape='square'/>
+                
+            </div>
+            <div class="row mt-3 text-center tooth-row">
+
+                <tooth ref="tooth-45" tooth-pos='4' tooth-id='5' shape='square'/>
+                <tooth ref="tooth-44" tooth-pos='4' tooth-id='4' shape='square'/>
+                <tooth ref="tooth-43" tooth-pos='4' tooth-id='3' shape='rectangle'/>
+                <tooth ref="tooth-42" tooth-pos='4' tooth-id='2' shape='rectangle'/>
+                <tooth ref="tooth-41" tooth-pos='4' tooth-id='1' shape='rectangle'/>
+
+                <tooth ref="tooth-31" tooth-pos='3' tooth-id='1' shape='rectangle'/>
+                <tooth ref="tooth-32" tooth-pos='3' tooth-id='2' shape='rectangle'/>
+                <tooth ref="tooth-33" tooth-pos='3' tooth-id='3' shape='rectangle'/>
+                <tooth ref="tooth-34" tooth-pos='3' tooth-id='4' shape='square'/>
+                <tooth ref="tooth-35" tooth-pos='3' tooth-id='5' shape='square'/>
+
+            </div>
+        </div>
+    </div>
+    <div class='mt-5 ml-4'>
+        <b-button v-on:click="mic()">Say command!</b-button>
+    </div>
+</div>
+</template>
+
+<script>
+import Tooth from './tooth';
+export default {
+    name: 'dentalDiagram',
+    data() {
+        return {
+            selected: 'adultTeeth',
+            options: [
+                { item: 'adultTeeth', name: 'Zęby stałe' },
+                { item: 'babyTeeth', name: 'Zęby mleczne' },
+            ],
+            pesel: 'wybierz osobę'
+        }
+    },
+    methods: {
+        showTeethData(person) {
+            if (person.personalDetails.secondName == '' || person.personalDetails.secondName == null)
+                this.pesel = person.personalDetails.firstName + ' ' + person.personalDetails.surname
+            else this.pesel = person.personalDetails.firstName + ' ' + person.personalDetails.secondName + ' ' + person.personalDetails.surname
+
+            // zęby stałe
+            var i = 1;
+            var teeth = person.permanentTeeth;
+            for (; i < 5; i++) {
+                var j = 1;
+                for (; j < 9; j++) {
+                    var id = i.toString() + j.toString();
+                    var ref = "tooth-" + id;
+                    this.$refs[ref].setToothPartDesease(id, teeth[id]['A'], 'A');
+                    this.$refs[ref].setToothPartDesease(id, teeth[id]['B'], 'B');
+                    this.$refs[ref].setToothPartDesease(id, teeth[id]['C'], 'C');
+                    this.$refs[ref].setToothPartDesease(id, teeth[id]['D'], 'D');
+                    this.$refs[ref].setToothPartDesease(id, teeth[id]['E'], 'E');
+                }
+            }
+
+            // TODO : zęby mleczne
+
+        },
+        getMicCommand() {
+            var request = new XMLHttpRequest();
+            request.open('GET', 'http://127.0.0.1:5000/mic', false);
+            request.send();
+            return JSON.parse(request.response);
+        },
+        useCommand(obj) {
+            var ref = "tooth-" + obj.toothId;
+            this.$refs[ref].setToothPartDesease(obj.toothId, obj.toothAilment, obj.toothPart);
+        },
+        mic() {
+            var obj = this.getMicCommand();
+            if (obj.next == 0) {
+                return;
+            }
+            else if (obj.next == 1) {
+                console.log("id: " + obj.toothId+"  part: " + obj.toothPart + "  ailment: " + obj.toothAilment);
+                this.useCommand(obj);
+            }
+            else if (obj.next == 2) {
+                console.log("Please, repeat command:")
+            }
+            while (obj.next == 1 || obj.next == 2) {
+                obj = this.getMicCommand();
+                if(obj.next == 0){
+                    return;
+                }
+                else if (obj.next == 1) {
+                    console.log("id: " + obj.toothId + "  part: " + obj.toothPart + "  ailment: " + obj.toothAilment);
+                    this.useCommand(obj);
+                }
+                else if (obj.next == 2) {
+                    console.log("Please, repeat command:");
+                }
+            }
+        },
+        saveTeeth() {
+            var permanentTeeth = {}
+            for (var i = 1; i < 5; i++) {
+                for (var j = 1; j < 9; j++) {
+                    var id = i.toString() + j.toString();
+                    var ref = "tooth-" + id;
+                    permanentTeeth[id] = this.$refs[ref].saveTooth();
+                }
+            }
+            return permanentTeeth;
+        }
+    },
+    created() {
+        console.log(this.selected)
+    },
+    components: {
+        Tooth
+    }
+}
+</script>
