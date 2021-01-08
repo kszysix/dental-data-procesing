@@ -7,10 +7,7 @@
 }
 
 .round-corner {
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
+  border-radius: 10px;
 }
 
 .personal-form {
@@ -47,6 +44,48 @@
   margin-left:1%;
   justify-content: space-between;  
 }
-/* .normal-size-tooth :first-child svg {
-height: 10px
-} */
+
+.clicked {
+  height: 100px!important;
+  margin-top: -15px;
+  margin-bottom: -15px;
+  position: relative;
+  z-index: 20;
+}
+
+path {
+  outline:none; 
+  border:0px;
+}
+
+.desease-button button {
+    border-radius: 5px!important;
+    margin: 2px;
+    border: 0px;
+    outline:none; 
+    border:0px;
+    color: black;
+    padding: 0.3rem 1rem;
+    width: 200px
+}
+
+.desease-button button:hover {
+  opacity: 0.8;
+}
+
+.dental-diagram {
+  margin-top: 7%;
+}
+
+.popover .b-popover .bs-popover-top {
+  min-width: 450px!important;
+}
+
+p {
+  color: gray
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+  border-color: gray;
+  background-color: gray;
+}

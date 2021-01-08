@@ -14,4 +14,24 @@
         D: 'M0 3 L0 97 L17 60 L17 40 Z',
         E: 'M21 41 L21 59 L79 59 L79 41 Z'
     }
+    // export const DESEASES = [
+    //     { id: 0, name: 'Zdrowy', color: 'lavender'},
+    //     { id: 1, name: 'Próchnica', color: 'lightcoral'},
+    //     { id: 2, name: 'Ubytek niepróchnicowy', color: 'gold'},
+    //     { id: 3, name: 'Wypełnienie stałe', color: 'skyblue'},
+    //     { id: 4, name: 'Wypełnienie czasowe', color: 'pink'},
+    //     { id: 5, name: 'Implant', color: 'darkseagreen'},
+    //     { id: 6, name: 'Do usunięcia', color: 'silver'},
+    //     { id: 7, name: 'Brak zęba', color: 'dimgray'},
+    // ]
+
+    export const DESEASES = [
+        { name: null, color: 'lavender'},
+        { name: 'wypełnienie', color: 'lightcoral'},
+        { name: 'próchnica', color: 'gold'},
+        { name: 'usunięty', color: 'skyblue'},
+        { name: 'proteza', color: 'pink'},
+        { name: 'przęsło', color: 'darkseagreen'},
+        { name: 'niewyrżnięty', color: 'silver'},
+    ]
 </script>

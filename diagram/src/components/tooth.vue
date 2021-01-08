@@ -1,167 +1,111 @@
 <template>
     <div>
-        <div class="text-center mt-2 ml-2 mr-2 mb-2">
+        <p v-if='toothPos < 3'>{{ toothPos + toothId }}</p>
+        <div class="text-center mt-2 ml-1 mr-1 mb-2">
             <svg
+                id='test'
                 class='tooth'
+                :class="{ clicked: show.A || show.B || show.C || show.D || show.E }"
                 viewBox="0 0 100 100"
                 role="group"
-                height="100" width="100"
-                >
-                <g>
+                height="100"
+                width="100">
+                <g v-for="part in parts" :key="part">
                     <path
+                        :id='toothPos + toothId + parts[part]'
                         class='clickable-tooth'
-                        @click="changecolor('A')"
-                        :d="toothShape.A"
-                        :fill="color.A"/>
-                    <path
-                        class='clickable-tooth'
-                        @click="changecolor('B')"
-                        :d="toothShape.B"
-                        :fill="color.B"/>
-                    <path
-                        class='clickable-tooth'
-                        @click="changecolor('C')"
-                        :d="toothShape.C"
-                        :fill="color.C"/>
-                    <path
-                        class='clickable-tooth'
-                        @click="changecolor('D')"
-                        :d="toothShape.D"
-                        :fill="color.D"/>
-                    
-                    <path
-                        class='clickable-tooth'
-                        @click="changecolor('E')"
-                        :d="toothShape.E"
-                        :fill="color.E"/>
+                        :d="toothShape[part]"
+                        :fill="deseases.find(elem => elem.name == toothData.deseases[part]).color"/>
                 </g>
             </svg>
+        </div>
+        <div class='mt-3'>
+            <p v-if='toothPos > 2'>{{ toothPos + toothId }}</p>
+        </div>
+
+        <div v-for="part in parts" :key="part">
+            <b-popover
+                :show.sync="show[part]"
+                :target='toothPos + toothId + parts[part]'
+                delay=0
+                triggers="click blur"
+                :placement='checkPosition(toothPos, parts[part])'>
+                <desease-list
+                    :tooth-number="toothPos + toothId"
+                    :tooth-part='parts[part]'/>
+            </b-popover>
         </div>
     </div>
 </template>
 
 <script>
-import { SQUARE_TOOTH_SHAPE, RECTANGLE_TOOTH_SHAPE } from './../assets/dentalData'
+import {
+    SQUARE_TOOTH_SHAPE,
+    RECTANGLE_TOOTH_SHAPE,
+    DESEASES,
+} from './../assets/dentalData'
+import DeseaseList from './deseaseList.vue'
 
 export default {
     name: 'tooth',
-    props: ['shape'],
+    props: ['shape', 'toothPos', 'toothId'],
     data: function(){
         return {
-            colors: ["gray","lightseagreen", "lightsalmon", "darkslategray", "peru", "peachpuff", "internationalorange"],
-            ailments: [null,"wypełnienie","próchnica","usunięty","proteza","przęsło","niewyrżnięty"],
-            n1: 1,
-            n2: 1,
-            n3: 1,
-            n4: 1,
-            n5: 1,
-            color: { A: 'gray', B: 'gray', C: 'gray', D: 'gray', E: 'gray' },
+            deseases: DESEASES,
+            toothShape: null,
+            toothData: {
+                id: this.toothPos + this.toothId,
+                deseases: { A: null, B: null, C: null, D: null, E: null },
+            },
+            parts: { A: 'A', B: 'B', C: 'C', D: 'D', E: 'E' },
+            show: { A: false, B: false, C: false, D: false, E: false },
+            // colors: ["gray","lightseagreen", "lightsalmon", "darkslategray", "peru", "peachpuff", "internationalorange"],
+            // ailments: [null,"wypełnienie","próchnica","usunięty","proteza","przęsło","niewyrżnięty"],
+            // color: { A: 'gray', B: 'gray', C: 'gray', D: 'gray', E: 'gray' },
             ailment: { A: null, B: null, C: null, D:null, E:null},
-            toothShape: null
         }
     },
     created() {
-        if (this.shape == 'square') this.toothShape = SQUARE_TOOTH_SHAPE
-        else this.toothShape = RECTANGLE_TOOTH_SHAPE
+        if (this.shape == 'square') this.toothShape = SQUARE_TOOTH_SHAPE;
+        else this.toothShape = RECTANGLE_TOOTH_SHAPE;
     },
-
+    mounted() {
+        this.$root.$on('clickDeseaseButton', (toothNumber, deseaseId, toothPart) => {
+            this.setToothPartDesease(toothNumber, deseaseId, toothPart);
+        })
+    },
     methods: {
-        saveTooth(){
-            return this.ailment;
+        saveTooth() {
+            // return this.ailment;
+            return this.toothData.deseases;
         },
-
-        changecolor(tooth) {
-            if (tooth == 'A') {
-                this.color.A = this.colors[this.n1]
-                this.ailment.A = this.ailments[this.n1];
-                this.n1 = (this.n1 + 1) % this.colors.length
-            }
-            else if (tooth == 'B') {
-                this.color.B = this.colors[this.n2]
-                this.ailment.B = this.ailments[this.n2];
-                this.n2 = (this.n2 + 1) % this.colors.length
-            }
-            else if (tooth == 'C') {
-                this.color.C = this.colors[this.n3]
-                this.ailment.C = this.ailments[this.n3];
-                this.n3 = (this.n3 + 1) % this.colors.length
-            }
-            else if (tooth == 'D') {
-                this.color.D = this.colors[this.n4]
-                this.ailment.D = this.ailments[this.n4];
-                this.n4 = (this.n4 + 1) % this.colors.length
-            }
-            else if (tooth == 'E') {
-                this.color.E = this.colors[this.n5]
-                this.ailment.E = this.ailments[this.n5];
-                this.n5 = (this.n5 + 1) % this.colors.length
+        setToothPartDesease(toothNumber, deseaseName, toothPart) {
+            if(toothNumber == this.toothPos + this.toothId) {
+                this.show[toothPart] = false;
+                this.toothData.deseases[toothPart] = deseaseName;
+                // if (deseaseId == 5 || deseaseId == 6 || deseaseId == 7) {
+                //     for (let part in this.toothData.deseases) {
+                //         this.toothData.deseases[part] = deseaseId;
+                //     }
+                // }
             }
         },
-		
-		setColor(toothPart, toothAilment){
-            var newColor = 0;
-
-            switch(toothAilment){
-                case this.ailments[1]:
-                    newColor = 1;
-                    break;
-                case this.ailments[2]:
-                    newColor = 2;
-                    break;
-                case this.ailments[3]:
-                    newColor = 3;
-                    break;
-                case this.ailments[4]:
-                    newColor = 4;
-                    break;
-                case this.ailments[5]:
-                    newColor = 5;
-                    break;
-                case this.ailments[6]:
-                    newColor = 6;
-                    break;
-                default:
-                    newColor = 0;
+        checkPosition(toothPos, toothPart) {
+            if (toothPos < 3) {
+                if (toothPart == this.parts.A || toothPart == this.parts.E) return 'top'
+                else if (toothPart == this.parts.B) return 'bottom'
+                else if (toothPart == this.parts.C) return 'righttop'
+                else if (toothPart == this.parts.D) return 'lefttop'
             }
-
-			switch(toothPart) {
-                case 'A':
-                    this.color.A = this.colors[newColor];
-                    this.ailment.A = this.ailments[newColor];
-                    break;
-                case 'B':
-                    this.color.B = this.colors[newColor];
-                    this.ailment.B = this.ailments[newColor];
-                    break;
-                case 'C':
-                    this.color.C = this.colors[newColor];
-                    this.ailment.C = this.ailments[newColor];
-                    break;
-                case 'D':
-                    this.color.D = this.colors[newColor];
-                    this.ailment.D = this.ailments[newColor];
-                    break;
-                case 'E':
-                    this.color.E = this.colors[newColor];
-                    this.ailment.E = this.ailments[newColor];
-                    break;
-                case 'F':
-                    this.color.A = this.colors[newColor];
-                    this.color.B = this.colors[newColor];
-                    this.color.C = this.colors[newColor];
-                    this.color.D = this.colors[newColor];
-                    this.color.E = this.colors[newColor];
-                    this.ailment.A = this.ailments[newColor];
-                    this.ailment.B = this.ailments[newColor];
-                    this.ailment.C = this.ailments[newColor];
-                    this.ailment.D = this.ailments[newColor];
-                    this.ailment.E = this.ailments[newColor];
-                    break;
-                default:
-                    
-                }
-		}
+            else if (toothPos > 2) {
+                if (toothPart == this.parts.A) return 'top'
+                else if (toothPart == this.parts.B || toothPart == this.parts.E) return 'bottom'
+                else if (toothPart == this.parts.C) return 'rightbottom'
+                else if (toothPart == this.parts.D) return 'leftbottom'
+            }
+        },
     },
+    components: { DeseaseList }
 }
 
 </script>
