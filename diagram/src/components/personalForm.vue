@@ -110,6 +110,7 @@
 export default {
     data: function() {
         return {
+            versionDate: null,
             person: {},
             firstName: null,
             secondName: null,
@@ -182,7 +183,39 @@ export default {
                 else {
                     this.notExists = false;
                 }
-                //var person = JSON.parse(request.response);
+
+                this.showPersonData(request.response);
+            }
+        },
+        showDataVersion(time){
+            this.cannotSaveState = false;
+            this.confirmSaveState = false;
+            if (this.personPeselState) {
+                var request = new XMLHttpRequest();
+                request.open('POST', 'http://127.0.0.1:5000/getPersonDataVersion', false);
+                var requestMsg = {
+                    "pesel":this.personPesel,
+                    "versionDate":this.versionDate,
+                    // jeżeli time == -1 to starsza wersja, jeżeli == 1 to nowsza
+                    "time":time
+                }
+                request.send(JSON.stringify(requestMsg));
+                if (request.response == "0") {
+                    console.log("Pesel: " + this.personPesel + " does not exist in mongoDatabase.");
+                    this.notExists = true;
+                    return;
+                }else if(request.response == "-1"){
+                    // nie ma starszej wersji
+                    //TODO
+                    return;
+                }else if(request.response == "1"){
+                    // nie ma nowszej wersji
+                    //TODO
+                    return;
+                }
+                else {
+                    this.notExists = false;
+                }
 
                 this.showPersonData(request.response);
             }
@@ -190,6 +223,8 @@ export default {
         showPersonData(person) {
             person = JSON.parse(person);
             this.$emit('getTeeth', person)
+
+            this.versionDate = person.versionDate;
 
             this.firstName = person.personalDetails.firstName;
             this.secondName = person.personalDetails.secondName;

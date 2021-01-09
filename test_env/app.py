@@ -17,6 +17,7 @@ import soundfile as sf
 
 import re
 import json
+from datetime import datetime
 
 import pymongo
 
@@ -55,8 +56,8 @@ CORS(app)
 def mic():
 	r = sr.Recognizer()
 	with sr.Microphone() as source:
-		#print(sd.query_devices() )
-		print("Say something!")
+		#print(sd.query_devices())
+		print("Powiedz komendę!")
 		filename = 'startMic.wav'
 		data, fs = sf.read(filename, dtype='float32')  
 		sd.play(data, fs)
@@ -196,16 +197,88 @@ def getPersonData():
 	mycol = mydb["customers"]
 	pesel = str(request.data.decode('UTF-8'))
 	myquery = { "personalDetails.pesel": pesel }
-	exist = mycol.find(myquery).count() > 0
+	counted = mycol.find(myquery).count()
+	exist = counted > 0
+	dates = []
 	if(exist):
 		cursor = mycol.find(myquery)
-		list_cur = list(cursor)
-		a = dumps(list_cur, indent = 2) 
-		b = json.loads(str(a))
-		return b[0]
+		date1 = datetime.strptime(cursor[0]["versionDate"], "%Y-%m-%dT%H:%M:%S.%f%z")
+		for i, x in enumerate(cursor):
+			print("---")
+			date2 = datetime.strptime(x["versionDate"], "%Y-%m-%dT%H:%M:%S.%f%z")
+			if(date1 >= date2):
+				print(date1)
+				print(date2)
+				print(date1 >= date2)
+			else:
+				print(date1)
+				print(date2)
+				print(date1 >= date2)
+				date1 = date2
+			print("---")
+			if(i == counted-1):
+				print("===")
+				print(date1)
+				a = dumps(x)
+				b = json.loads(a)
+				return b
 	else:
 		return "0"
 
+@app.route('/getPersonDataVersion', methods=['POST'])
+def getPersonDataVersion():
+	myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+	dblist = myclient.list_database_names()
+	mydb = myclient["mydatabase"]
+	mycol = mydb["customers"]
+	message = str(request.data.decode('UTF-8'))
+	print(message)
+	message = dumps(message)
+	message = json.loads(message)
+	message = json.loads(message)
+	print("MSG")
+	print(message)
+	myquery = { "personalDetails.pesel": message["pesel"] }
+	counted = mycol.find(myquery).count()
+	exist = counted > 0
+	if(counted == 1):
+		return "-1"
+	dates = []
+	if(exist):
+		cursor = mycol.find(myquery)
+		# date1 = datetime.strptime(cursor[0]["versionDate"], "%Y-%m-%dT%H:%M:%S.%f%z")
+		for x in cursor:
+			dates.append(str(x["versionDate"]))
+
+		print(dates)
+		dates.sort(key = lambda date: datetime.strptime(date, "%Y-%m-%dT%H:%M:%S.%f%z")) 
+		print(dates)
+		index = dates.index(message["versionDate"])
+		print("index "+str(index))
+		resultIndex = index;
+		if(message["time"] == "-1"):
+			if(index != 0):
+				resultIndex = index - 1
+			else:
+				return "-1"
+			
+		elif(message["time"] == "1"):
+			if(index != len(dates)-1):
+				resultIndex = index + 1
+			else:
+				return "1"
+
+		resultDate = dates[resultIndex]
+		cursor = mycol.find(myquery)
+		for i, x in enumerate(cursor):
+			if(resultDate == x["versionDate"]):
+				print("===")
+				print(x)
+				a = dumps(x)
+				b = json.loads(a)
+				return b
+
+	return "0"
 
 @app.route('/savePersonData', methods=['POST'])
 def getSaveData():
@@ -220,12 +293,8 @@ def getSaveData():
 	cursor = mycol.find(myquery)
 	duplicated = (mycol.find(myquery).count()) > 0
 
-	if(duplicated):
-		mycol.update_one(myquery, {"$set": person}, upsert=False)
-	else:
-		mycol.insert_one(person)
+	mycol.insert_one(person)
 	
-
 	return "conf"
 
 def startRunner():

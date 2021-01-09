@@ -1,14 +1,21 @@
 <template>
 <div>
     <h3 v-if='name != null' class='text-left mt-3 ml-3 mb-3'>{{ name }}</h3>
+    <h5 v-if='name != null' class='text-left mt-3 ml-3 mb-3'>Data wersji diagramu: {{ versionDate }}</h5>
     <div v-if='name == null' class='mt-3 ml-3 mr-3 '>
         <b-alert show variant="danger">Wprowadź dane pacjenta w zakładce <i>Dane osobowe</i></b-alert>
     </div>
     <div class='mt-2 text-right ml-3 mr-3 dental-diagram'>
+
+        <b-button class='mt-2 mb-4' v-on:click="showVersion('-1')">Starsza wersja</b-button>
+        <b-button class='mt-2 mb-4' v-on:click="showVersion('1')">Nowsza wersja</b-button>
+
         <b-card class="mb-1">
             <b-card-header header-tag="header" class="p-1" role="tab">
                 <b-button block v-b-toggle.accordion-1 variant="info">Zęby stałe</b-button>
             </b-card-header>
+            
+
             <b-collapse id="accordion-1" visible accordion="my-accordion" role="tabpanel">
                 <b-card-body>
                     <div class="row text-center tooth-row mt-4">
@@ -113,7 +120,8 @@ export default {
         return {
             name: null,
             command: '',
-            commandShow: false
+            commandShow: false,
+            versionDate: null
         }
     },
     computed:{
@@ -128,10 +136,11 @@ export default {
     },
     methods: {
         showTeethData(person) {
+            // person = JSON.parse(person)
             if (person.personalDetails.secondName == '' || person.personalDetails.secondName == null)
                 this.name = person.personalDetails.firstName + ' ' + person.personalDetails.surname
             else this.name = person.personalDetails.firstName + ' ' + person.personalDetails.secondName + ' ' + person.personalDetails.surname
-
+            this.versionDate = person.versionDate;    
             // zęby stałe
             var teeth = person.permanentTeeth;
             for (var i = 1; i < 5; i++) {
@@ -222,6 +231,11 @@ export default {
                 }
             }
             return { permanentTeeth: permanentTeeth, babyTeeth: babyTeeth };
+        },
+        showVersion(time){
+            if(this.versionDate != null){
+                this.$emit('showVersion', time);
+            }
         }
     },
     components: {
