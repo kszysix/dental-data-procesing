@@ -150,7 +150,7 @@ export default {
                 }
             }
 
-            // TODO : zęby mleczne
+            // zęby mleczne
             var teeth = person.primaryTeeth;
             for (var i = 5; i < 9; i++) {
                 for (var j = 1; j < 6; j++) {

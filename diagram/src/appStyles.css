@@ -90,3 +90,14 @@ p {
   background-color: #83a3a0;
   border-color: #83a3a0;
 }
+
+.dental-diagram button:hover {
+  background-color: #83a3a0;
+  border-color: #83a3a0;
+  opacity: 0.9;
+}
+
+.dental-diagram .btn-info:focus {
+  background-color: #83a3a0;
+  border-color: #83a3a0;
+}

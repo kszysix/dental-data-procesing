@@ -62,8 +62,8 @@ export default {
         }
     },
     created() {
-        if (this.shape == 'square') this.toothShape = SQUARE_TOOTH_SHAPE;
-        else this.toothShape = RECTANGLE_TOOTH_SHAPE;
+        if (this.shape == 'square') this.toothShape = SQUARE_TOOTH_SHAPE[(this.toothPos - 1) % 4];
+        else this.toothShape = RECTANGLE_TOOTH_SHAPE[(this.toothPos - 1) % 4];
     },
     mounted() {
         this.$root.$on('clickDeseaseButton', (toothNumber, deseaseId, toothPart) => {
@@ -90,17 +90,29 @@ export default {
             }
         },
         checkPosition(toothPos, toothPart) {
-            if (toothPos < 3 || (toothPos > 4 && toothPos < 7)) {
-                if (toothPart == this.parts.A || toothPart == this.parts.E) return 'top'
-                else if (toothPart == this.parts.B) return 'bottom'
-                else if (toothPart == this.parts.C) return 'righttop'
-                else if (toothPart == this.parts.D) return 'lefttop'
+            if (toothPos == 1 || toothPos == 5) {
+                if (toothPart == this.parts.B || toothPart == this.parts.D) return 'top'
+                else if (toothPart == this.parts.E) return 'bottom'
+                else if (toothPart == this.parts.A) return 'righttop'
+                else if (toothPart == this.parts.C) return 'lefttop'
             }
-            else if ((toothPos > 2 && toothPos < 5) || toothPos > 6) {
-                if (toothPart == this.parts.A) return 'top'
-                else if (toothPart == this.parts.B || toothPart == this.parts.E) return 'bottom'
+            else if (toothPos == 2 || toothPos == 6) {
+                if (toothPart == this.parts.B || toothPart == this.parts.D) return 'top'
+                else if (toothPart == this.parts.E) return 'bottom'
+                else if (toothPart == this.parts.C) return 'righttop'
+                else if (toothPart == this.parts.A) return 'lefttop'
+            }
+            else if (toothPos == 3 || toothPos == 7) {
+                if (toothPart == this.parts.E) return 'top'
+                else if (toothPart == this.parts.B || toothPart == this.parts.D) return 'bottom'
                 else if (toothPart == this.parts.C) return 'rightbottom'
-                else if (toothPart == this.parts.D) return 'leftbottom'
+                else if (toothPart == this.parts.A) return 'leftbottom'
+            }
+            else if (toothPos == 4 || toothPos == 8) {
+                if (toothPart == this.parts.E) return 'top'
+                else if (toothPart == this.parts.B || toothPart == this.parts.D) return 'bottom'
+                else if (toothPart == this.parts.A) return 'rightbottom'
+                else if (toothPart == this.parts.C) return 'leftbottom'
             }
         },
         setToothFullDesease(deseaseName){
