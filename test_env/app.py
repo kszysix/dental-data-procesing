@@ -30,17 +30,18 @@ app = Flask(__name__)
 CORS(app)
 
 # 	@ - in progress
+#	# - done
 #	TODO:
 #
 #	0. PRACA PISEMNA
 #
 #	1. Osobna funkcja do łączenia z mongo + walidacja jeśli coś nie istnieje?
 # @ 2. Zapis przez mikrofon w czasie rzeczywistym 
-#	3. Zęby mleczne
-#	4. Opis numeryczny zębów - front
+# # 3. Zęby mleczne
+# # 4. Opis numeryczny zębów - front
 #	5. Legenda chorób - front
 #	6. XMLHttp - deprecated - backend
-#	7. README.md - jak uruchomić aplikację - github
+# # 7. README.md - jak uruchomić aplikację - github
 #	8. Przenoszenie bazy mongo
 #	9. Walidacja połączenia z Flask'iem - front
 #	10. Dodawanie komend przez usera
@@ -48,11 +49,13 @@ CORS(app)
 #	12. 
 
 #	device_index=3
+# 	sd.query_devices() 
 
 @app.route('/mic', methods=['GET'])
 def mic():
 	r = sr.Recognizer()
-	with sr.Microphone(device_index=3) as source:
+	with sr.Microphone() as source:
+		#print(sd.query_devices() )
 		print("Say something!")
 		filename = 'startMic.wav'
 		data, fs = sf.read(filename, dtype='float32')  
@@ -102,7 +105,7 @@ def createCommandJson(command):
 		'toothDesease':0,
 		'next':2
 	}
-	if(command == "stop" or command == "100"):
+	if(command == "stop" or command == "100" or command == "stot"):
 		response["next"] = 0
 		return json.dumps(response)
 
@@ -121,7 +124,6 @@ def createCommandJson(command):
 			while i < len(command) and command[i] != " ":
 				toothPart = toothPart + command[i]
 				i = i + 1
-
 		elif(re.match('[a-zA-Z,ó,ż,ź,ę,ą,ł,ń,ś]', command[i])):
 			toothDesease = toothDesease + command[i]
 		i = i + 1 
@@ -171,7 +173,7 @@ def createCommandJson(command):
 		print("Error: can't find parameter in mongo database")
 		toothDesease = ""
 
-
+	print("id: " + toothId + "  part: " + toothPart + "  desease: " + toothDesease)
 	if (len(toothId) == 2 and
 		len(toothPart) > 0 and
 		len(toothDesease) > 4):
@@ -225,3 +227,25 @@ def getSaveData():
 	
 
 	return "conf"
+
+def startRunner():
+	myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+	mydb = myclient["mydatabase"]
+	print(mydb.list_collection_names()) 
+	print("parameters" in mydb.list_collection_names()) 
+	if("parameters" in mydb.list_collection_names()):
+		return 0
+	else:
+		mycol = mydb["parameters"]
+		with open('../database/parameters/deseases.json',encoding="utf-8") as f:
+
+			deseases = json.load(f)
+			mycol.insert_one(deseases)
+		with open('../database/parameters/parts.json',encoding="utf-8") as f:
+
+			parts = json.load(f)
+			mycol.insert_one(parts)
+if __name__ == "__main__":
+    startRunner()
+
+    app.run()
