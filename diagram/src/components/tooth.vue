@@ -1,6 +1,6 @@
 <template>
     <div>
-        <p v-if='toothPos < 3'>{{ toothPos + toothId }}</p>
+        <p v-if='toothPos < 3 || (toothPos > 4 && toothPos < 7)'>{{ toothPos + toothId }}</p>
         <div class="text-center mt-2 ml-1 mr-1 mb-2">
             <svg
                 id='test'
@@ -20,7 +20,7 @@
             </svg>
         </div>
         <div class='mt-3'>
-            <p v-if='toothPos > 2'>{{ toothPos + toothId }}</p>
+            <p v-if='(toothPos > 2 && toothPos < 5) || toothPos > 6'>{{ toothPos + toothId }}</p>
         </div>
 
         <div v-for="part in parts" :key="part">

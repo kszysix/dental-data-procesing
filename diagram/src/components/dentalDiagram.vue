@@ -58,32 +58,32 @@
         <div v-if="selected == 'babyTeeth'">
             <div class="row mt-3 text-center tooth-row">
 
-                <tooth ref="tooth-15" tooth-pos='1' tooth-id='5' shape='square'/>
-                <tooth ref="tooth-14" tooth-pos='1' tooth-id='4' shape='square'/>
-                <tooth ref="tooth-13" tooth-pos='1' tooth-id='3' shape='rectangle'/>
-                <tooth ref="tooth-12" tooth-pos='1' tooth-id='2' shape='rectangle'/>
-                <tooth ref="tooth-11" tooth-pos='1' tooth-id='1' shape='rectangle'/>
+                <tooth ref="tooth-55" tooth-pos='5' tooth-id='5' shape='square'/>
+                <tooth ref="tooth-54" tooth-pos='5' tooth-id='4' shape='square'/>
+                <tooth ref="tooth-53" tooth-pos='5' tooth-id='3' shape='rectangle'/>
+                <tooth ref="tooth-52" tooth-pos='5' tooth-id='2' shape='rectangle'/>
+                <tooth ref="tooth-51" tooth-pos='5' tooth-id='1' shape='rectangle'/>
 
-                <tooth ref="tooth-21" tooth-pos='2' tooth-id='1' shape='rectangle'/>
-                <tooth ref="tooth-22" tooth-pos='2' tooth-id='2' shape='rectangle'/>
-                <tooth ref="tooth-23" tooth-pos='2' tooth-id='3' shape='rectangle'/>
-                <tooth ref="tooth-24" tooth-pos='2' tooth-id='4' shape='square'/>
-                <tooth ref="tooth-25" tooth-pos='2' tooth-id='5' shape='square'/>
+                <tooth ref="tooth-61" tooth-pos='6' tooth-id='1' shape='rectangle'/>
+                <tooth ref="tooth-62" tooth-pos='6' tooth-id='2' shape='rectangle'/>
+                <tooth ref="tooth-63" tooth-pos='6' tooth-id='3' shape='rectangle'/>
+                <tooth ref="tooth-64" tooth-pos='6' tooth-id='4' shape='square'/>
+                <tooth ref="tooth-65" tooth-pos='6' tooth-id='5' shape='square'/>
                 
             </div>
             <div class="row mt-3 text-center tooth-row">
 
-                <tooth ref="tooth-45" tooth-pos='4' tooth-id='5' shape='square'/>
-                <tooth ref="tooth-44" tooth-pos='4' tooth-id='4' shape='square'/>
-                <tooth ref="tooth-43" tooth-pos='4' tooth-id='3' shape='rectangle'/>
-                <tooth ref="tooth-42" tooth-pos='4' tooth-id='2' shape='rectangle'/>
-                <tooth ref="tooth-41" tooth-pos='4' tooth-id='1' shape='rectangle'/>
+                <tooth ref="tooth-85" tooth-pos='8' tooth-id='5' shape='square'/>
+                <tooth ref="tooth-84" tooth-pos='8' tooth-id='4' shape='square'/>
+                <tooth ref="tooth-83" tooth-pos='8' tooth-id='3' shape='rectangle'/>
+                <tooth ref="tooth-82" tooth-pos='8' tooth-id='2' shape='rectangle'/>
+                <tooth ref="tooth-81" tooth-pos='8' tooth-id='1' shape='rectangle'/>
 
-                <tooth ref="tooth-31" tooth-pos='3' tooth-id='1' shape='rectangle'/>
-                <tooth ref="tooth-32" tooth-pos='3' tooth-id='2' shape='rectangle'/>
-                <tooth ref="tooth-33" tooth-pos='3' tooth-id='3' shape='rectangle'/>
-                <tooth ref="tooth-34" tooth-pos='3' tooth-id='4' shape='square'/>
-                <tooth ref="tooth-35" tooth-pos='3' tooth-id='5' shape='square'/>
+                <tooth ref="tooth-71" tooth-pos='7' tooth-id='1' shape='rectangle'/>
+                <tooth ref="tooth-72" tooth-pos='7' tooth-id='2' shape='rectangle'/>
+                <tooth ref="tooth-73" tooth-pos='7' tooth-id='3' shape='rectangle'/>
+                <tooth ref="tooth-74" tooth-pos='7' tooth-id='4' shape='square'/>
+                <tooth ref="tooth-75" tooth-pos='7' tooth-id='5' shape='square'/>
 
             </div>
         </div>
