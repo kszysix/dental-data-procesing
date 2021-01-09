@@ -140,11 +140,9 @@ export default {
             else this.name = person.personalDetails.firstName + ' ' + person.personalDetails.secondName + ' ' + person.personalDetails.surname
 
             // zęby stałe
-            var i = 1;
             var teeth = person.permanentTeeth;
-            for (; i < 5; i++) {
-                var j = 1;
-                for (; j < 9; j++) {
+            for (var i = 1; i < 5; i++) {
+                for (var j = 1; j < 9; j++) {
                     var id = i.toString() + j.toString();
                     var ref = "tooth-" + id;
                     this.$refs[ref].setToothPartDesease(id, teeth[id]['A'], 'A');
