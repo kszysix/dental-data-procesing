@@ -204,16 +204,18 @@ export default {
                 }else if(request.response == "-1"){
                     // nie ma starszej wersji
                     //TODO
+                    this.$emit('showNoVersion', "-1");
                     return;
                 }else if(request.response == "1"){
                     // nie ma nowszej wersji
                     //TODO
+                    this.$emit('showNoVersion', "1");
                     return;
                 }
                 else {
                     this.notExists = false;
                 }
-
+                this.$emit('showNoVersion', "0");
                 this.showPersonData(request.response);
             }
         },

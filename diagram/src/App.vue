@@ -4,7 +4,7 @@
     <b-tabs content-class="mt-3" class="mt-1">
 
       <b-tab title="Dane osobowe" active>
-        <personal-form ref="personal-form" @setPerson="setPerson" @getTeeth="getTeeth" @showVersion="showVersion"/>
+        <personal-form ref="personal-form" @setPerson="setPerson" @getTeeth="getTeeth" @showNoVersion="showNoVersion"  />
       </b-tab>
 
       <b-tab title="Diagram zębowy">
@@ -35,6 +35,9 @@ export default {
     },
     showVersion(time){
       this.$refs["personal-form"].showDataVersion(time);
+    },
+    showNoVersion(time){
+      this.$refs["dental-diagram"].showNoVersion(time);
     }
   }
 }

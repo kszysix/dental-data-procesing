@@ -56,7 +56,7 @@ CORS(app)
 def mic():
 	r = sr.Recognizer()
 	with sr.Microphone() as source:
-		#print(sd.query_devices())
+		# print(sd.query_devices())
 		print("Powiedz komendę!")
 		filename = 'startMic.wav'
 		data, fs = sf.read(filename, dtype='float32')  

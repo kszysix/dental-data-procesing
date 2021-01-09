@@ -7,8 +7,8 @@
     </div>
 
     <div v-if='name != null' class='mt-2 mb-4 mr-3 text-right'>
-        <b-button class='text-right' v-on:click="showVersion('-1')">Starsza wersja</b-button>
-        <b-button class='text-right' v-on:click="showVersion('1')">Nowsza wersja</b-button>
+        <b-button class='text-right' v-on:click="showVersion('-1')" :disabled="oldestVersion">Starsza wersja</b-button>
+        <b-button class='text-right' v-on:click="showVersion('1')" :disabled="newestVersion">Nowsza wersja</b-button>
     </div>
 
     <div class='mt-2 text-right ml-3 mr-3 dental-diagram'>
@@ -111,8 +111,10 @@
         </b-card>
     </div>
     <div class='mt-5 ml-4'>
-        <b-button v-on:click="mic()">Powiedz komendę</b-button>
-         <label class='text-left mt-3 ml-3' v-if="commandShow">Zrozumiana komenda: {{ command }}</label>
+
+        <b-button @click="mic()" :disabled="micOn" >Powiedz komendę</b-button>
+        <b-button @click="endMic = true" v-if="micOn" >Zakończ komunikację głosową</b-button>
+
     </div>
 
 </div>
@@ -128,19 +130,15 @@ export default {
         return {
             name: null,
             command: '',
-            commandShow: false,
-            versionDate: null
+            versionDate: null,
+            oldestVersion: false,
+            newestVersion: true,
+            micOn: false,
+            endMic: false
         }
     },
     computed:{
-        commandState(){
-            if(this.command == ''){
-                this.commandShow = false;
-            }else{
-                this.commandShow = true;
-            
-            }
-        }
+
     },
     methods: {
         showTeethData(person) {
@@ -189,12 +187,15 @@ export default {
             this.$refs[ref].setToothPartDesease(obj.toothId, obj.toothDesease, obj.toothPart);
         },
         mic() {
+            this.micOn = true;
             this.command = '';
             var obj = this.getMicCommand();
             this.command = obj.command;
             console.log(obj.command);
-            if (obj.next == 0) {
+            if (obj.next == 0 || this.endMic) {
                 this.command = '';
+                this.endMic = false;
+                this.micOn = false;
                 return;
             }
             else if (obj.next == 1) {
@@ -208,8 +209,10 @@ export default {
                 obj = this.getMicCommand();
                 this.command = obj.command;
                 console.log(obj.command);
-                if(obj.next == 0){
+                if(obj.next == 0 || this.endMic){
                     this.command = '';
+                    this.endMic = false;
+                    this.micOn = false;
                     return;
                 }
                 else if (obj.next == 1) {
@@ -243,6 +246,18 @@ export default {
         showVersion(time){
             if(this.versionDate != null){
                 this.$emit('showVersion', time);
+            }
+        },
+        showNoVersion(time){
+            if(time == "-1"){
+                this.oldestVersion = true;
+                this.newestVersion = false;
+            }else if(time == "1"){
+                this.newestVersion = true;
+                this.oldestVersion = false;
+            }else{
+                this.oldestVersion = false;
+                this.newestVersion = false;
             }
         }
     },
