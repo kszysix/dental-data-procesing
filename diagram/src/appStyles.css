@@ -73,10 +73,6 @@ path {
   opacity: 0.8;
 }
 
-.dental-diagram {
-  margin-top: 7%;
-}
-
 .popover .b-popover .bs-popover-top {
   min-width: 450px!important;
 }
@@ -88,4 +84,9 @@ p {
 .custom-control-input:checked ~ .custom-control-label::before {
   border-color: gray;
   background-color: gray;
+}
+
+.dental-diagram button {
+  background-color: #83a3a0;
+  border-color: #83a3a0;
 }

@@ -1,92 +1,98 @@
 <template>
 <div>
     <label class='text-left mt-3 ml-3'>{{ pesel }}</label>
-    <div class='mt-2 text-right mr-5'>
-        <b-form-radio-group
-            v-model="selected"
-            :options="options"
-            class="mb-3"
-            size=""
-            value-field="item"
-            text-field="name"
-            disabled-field="notEnabled">
-        </b-form-radio-group>
-        <div class='dental-diagram' v-if="selected == 'adultTeeth'">
-            <div class="row mt-3 text-center tooth-row">
+    <div class='mt-2 text-right ml-3 mr-3 dental-diagram'>
+        <b-card class="mb-1">
+            <b-card-header header-tag="header" class="p-1" role="tab">
+                <b-button block v-b-toggle.accordion-1 variant="info">Zęby stałe</b-button>
+            </b-card-header>
+            <b-collapse id="accordion-1" visible accordion="my-accordion" role="tabpanel">
+                <b-card-body>
+                    <div class="row text-center tooth-row mt-4">
 
-                <tooth ref="tooth-18" tooth-pos='1' tooth-id='8' shape='square'/>
-                <tooth ref="tooth-17" tooth-pos='1' tooth-id='7' shape='square'/>
-                <tooth ref="tooth-16" tooth-pos='1' tooth-id='6' shape='square'/>
-                <tooth ref="tooth-15" tooth-pos='1' tooth-id='5' shape='square'/>
-                <tooth ref="tooth-14" tooth-pos='1' tooth-id='4' shape='square'/>
-                <tooth ref="tooth-13" tooth-pos='1' tooth-id='3' shape='rectangle'/>
-                <tooth ref="tooth-12" tooth-pos='1' tooth-id='2' shape='rectangle'/>
-                <tooth ref="tooth-11" tooth-pos='1' tooth-id='1' shape='rectangle'/>
+                        <tooth ref="tooth-18" tooth-pos='1' tooth-id='8' shape='square'/>
+                        <tooth ref="tooth-17" tooth-pos='1' tooth-id='7' shape='square'/>
+                        <tooth ref="tooth-16" tooth-pos='1' tooth-id='6' shape='square'/>
+                        <tooth ref="tooth-15" tooth-pos='1' tooth-id='5' shape='square'/>
+                        <tooth ref="tooth-14" tooth-pos='1' tooth-id='4' shape='square'/>
+                        <tooth ref="tooth-13" tooth-pos='1' tooth-id='3' shape='rectangle'/>
+                        <tooth ref="tooth-12" tooth-pos='1' tooth-id='2' shape='rectangle'/>
+                        <tooth ref="tooth-11" tooth-pos='1' tooth-id='1' shape='rectangle'/>
 
-                <tooth ref="tooth-21" tooth-pos='2' tooth-id='1' shape='rectangle'/>
-                <tooth ref="tooth-22" tooth-pos='2' tooth-id='2' shape='rectangle'/>
-                <tooth ref="tooth-23" tooth-pos='2' tooth-id='3' shape='rectangle'/>
-                <tooth ref="tooth-24" tooth-pos='2' tooth-id='4' shape='square'/>
-                <tooth ref="tooth-25" tooth-pos='2' tooth-id='5' shape='square'/>
-                <tooth ref="tooth-26" tooth-pos='2' tooth-id='6' shape='square'/>
-                <tooth ref="tooth-27" tooth-pos='2' tooth-id='7' shape='square'/>
-                <tooth ref="tooth-28" tooth-pos='2' tooth-id='8' shape='square'/>
+                        <tooth ref="tooth-21" tooth-pos='2' tooth-id='1' shape='rectangle'/>
+                        <tooth ref="tooth-22" tooth-pos='2' tooth-id='2' shape='rectangle'/>
+                        <tooth ref="tooth-23" tooth-pos='2' tooth-id='3' shape='rectangle'/>
+                        <tooth ref="tooth-24" tooth-pos='2' tooth-id='4' shape='square'/>
+                        <tooth ref="tooth-25" tooth-pos='2' tooth-id='5' shape='square'/>
+                        <tooth ref="tooth-26" tooth-pos='2' tooth-id='6' shape='square'/>
+                        <tooth ref="tooth-27" tooth-pos='2' tooth-id='7' shape='square'/>
+                        <tooth ref="tooth-28" tooth-pos='2' tooth-id='8' shape='square'/>
 
-            </div>
-            <div class="row mt-3 text-center tooth-row">
+                    </div>
+                    <div class="row mt-3 text-center tooth-row">
 
-                <tooth ref="tooth-48" tooth-pos='4' tooth-id='8' shape='square'/>
-                <tooth ref="tooth-47" tooth-pos='4' tooth-id='7' shape='square'/>
-                <tooth ref="tooth-46" tooth-pos='4' tooth-id='6' shape='square'/>
-                <tooth ref="tooth-45" tooth-pos='4' tooth-id='5' shape='square'/>
-                <tooth ref="tooth-44" tooth-pos='4' tooth-id='4' shape='square'/>
-                <tooth ref="tooth-43" tooth-pos='4' tooth-id='3' shape='rectangle'/>
-                <tooth ref="tooth-42" tooth-pos='4' tooth-id='2' shape='rectangle'/>
-                <tooth ref="tooth-41" tooth-pos='4' tooth-id='1' shape='rectangle'/>
+                        <tooth ref="tooth-48" tooth-pos='4' tooth-id='8' shape='square'/>
+                        <tooth ref="tooth-47" tooth-pos='4' tooth-id='7' shape='square'/>
+                        <tooth ref="tooth-46" tooth-pos='4' tooth-id='6' shape='square'/>
+                        <tooth ref="tooth-45" tooth-pos='4' tooth-id='5' shape='square'/>
+                        <tooth ref="tooth-44" tooth-pos='4' tooth-id='4' shape='square'/>
+                        <tooth ref="tooth-43" tooth-pos='4' tooth-id='3' shape='rectangle'/>
+                        <tooth ref="tooth-42" tooth-pos='4' tooth-id='2' shape='rectangle'/>
+                        <tooth ref="tooth-41" tooth-pos='4' tooth-id='1' shape='rectangle'/>
 
-                <tooth ref="tooth-31" tooth-pos='3' tooth-id='1' shape='rectangle'/>
-                <tooth ref="tooth-32" tooth-pos='3' tooth-id='2' shape='rectangle'/>
-                <tooth ref="tooth-33" tooth-pos='3' tooth-id='3' shape='rectangle'/>
-                <tooth ref="tooth-34" tooth-pos='3' tooth-id='4' shape='square'/>
-                <tooth ref="tooth-35" tooth-pos='3' tooth-id='5' shape='square'/>
-                <tooth ref="tooth-36" tooth-pos='3' tooth-id='6' shape='square'/>
-                <tooth ref="tooth-37" tooth-pos='3' tooth-id='7' shape='square'/>
-                <tooth ref="tooth-38" tooth-pos='3' tooth-id='8' shape='square'/>
+                        <tooth ref="tooth-31" tooth-pos='3' tooth-id='1' shape='rectangle'/>
+                        <tooth ref="tooth-32" tooth-pos='3' tooth-id='2' shape='rectangle'/>
+                        <tooth ref="tooth-33" tooth-pos='3' tooth-id='3' shape='rectangle'/>
+                        <tooth ref="tooth-34" tooth-pos='3' tooth-id='4' shape='square'/>
+                        <tooth ref="tooth-35" tooth-pos='3' tooth-id='5' shape='square'/>
+                        <tooth ref="tooth-36" tooth-pos='3' tooth-id='6' shape='square'/>
+                        <tooth ref="tooth-37" tooth-pos='3' tooth-id='7' shape='square'/>
+                        <tooth ref="tooth-38" tooth-pos='3' tooth-id='8' shape='square'/>
 
-            </div>
-        </div>
-        <div v-if="selected == 'babyTeeth'">
-            <div class="row mt-3 text-center tooth-row">
+                    </div>
+                </b-card-body>
+            </b-collapse>
+        <!-- </b-card> -->
 
-                <tooth ref="tooth-55" tooth-pos='5' tooth-id='5' shape='square'/>
-                <tooth ref="tooth-54" tooth-pos='5' tooth-id='4' shape='square'/>
-                <tooth ref="tooth-53" tooth-pos='5' tooth-id='3' shape='rectangle'/>
-                <tooth ref="tooth-52" tooth-pos='5' tooth-id='2' shape='rectangle'/>
-                <tooth ref="tooth-51" tooth-pos='5' tooth-id='1' shape='rectangle'/>
+        <!-- <b-card class="mb-1"> -->
+            <b-card-header header-tag="header" class="p-1" role="tab">
+                <b-button block v-b-toggle.accordion-2 variant="info">Zęby mleczne</b-button>
+            </b-card-header>
+            <b-collapse id="accordion-2" visible accordion="my-accordion" role="tabpanel">
+                <b-card-body>
+                    <div class="row mt-3 text-center tooth-row">
 
-                <tooth ref="tooth-61" tooth-pos='6' tooth-id='1' shape='rectangle'/>
-                <tooth ref="tooth-62" tooth-pos='6' tooth-id='2' shape='rectangle'/>
-                <tooth ref="tooth-63" tooth-pos='6' tooth-id='3' shape='rectangle'/>
-                <tooth ref="tooth-64" tooth-pos='6' tooth-id='4' shape='square'/>
-                <tooth ref="tooth-65" tooth-pos='6' tooth-id='5' shape='square'/>
-                
-            </div>
-            <div class="row mt-3 text-center tooth-row">
+                        <tooth ref="tooth-55" tooth-pos='5' tooth-id='5' shape='square'/>
+                        <tooth ref="tooth-54" tooth-pos='5' tooth-id='4' shape='square'/>
+                        <tooth ref="tooth-53" tooth-pos='5' tooth-id='3' shape='rectangle'/>
+                        <tooth ref="tooth-52" tooth-pos='5' tooth-id='2' shape='rectangle'/>
+                        <tooth ref="tooth-51" tooth-pos='5' tooth-id='1' shape='rectangle'/>
 
-                <tooth ref="tooth-85" tooth-pos='8' tooth-id='5' shape='square'/>
-                <tooth ref="tooth-84" tooth-pos='8' tooth-id='4' shape='square'/>
-                <tooth ref="tooth-83" tooth-pos='8' tooth-id='3' shape='rectangle'/>
-                <tooth ref="tooth-82" tooth-pos='8' tooth-id='2' shape='rectangle'/>
-                <tooth ref="tooth-81" tooth-pos='8' tooth-id='1' shape='rectangle'/>
+                        <tooth ref="tooth-61" tooth-pos='6' tooth-id='1' shape='rectangle'/>
+                        <tooth ref="tooth-62" tooth-pos='6' tooth-id='2' shape='rectangle'/>
+                        <tooth ref="tooth-63" tooth-pos='6' tooth-id='3' shape='rectangle'/>
+                        <tooth ref="tooth-64" tooth-pos='6' tooth-id='4' shape='square'/>
+                        <tooth ref="tooth-65" tooth-pos='6' tooth-id='5' shape='square'/>
+                        
+                    </div>
+                    <div class="row mt-3 text-center tooth-row">
 
-                <tooth ref="tooth-71" tooth-pos='7' tooth-id='1' shape='rectangle'/>
-                <tooth ref="tooth-72" tooth-pos='7' tooth-id='2' shape='rectangle'/>
-                <tooth ref="tooth-73" tooth-pos='7' tooth-id='3' shape='rectangle'/>
-                <tooth ref="tooth-74" tooth-pos='7' tooth-id='4' shape='square'/>
-                <tooth ref="tooth-75" tooth-pos='7' tooth-id='5' shape='square'/>
+                        <tooth ref="tooth-85" tooth-pos='8' tooth-id='5' shape='square'/>
+                        <tooth ref="tooth-84" tooth-pos='8' tooth-id='4' shape='square'/>
+                        <tooth ref="tooth-83" tooth-pos='8' tooth-id='3' shape='rectangle'/>
+                        <tooth ref="tooth-82" tooth-pos='8' tooth-id='2' shape='rectangle'/>
+                        <tooth ref="tooth-81" tooth-pos='8' tooth-id='1' shape='rectangle'/>
 
-            </div>
-        </div>
+                        <tooth ref="tooth-71" tooth-pos='7' tooth-id='1' shape='rectangle'/>
+                        <tooth ref="tooth-72" tooth-pos='7' tooth-id='2' shape='rectangle'/>
+                        <tooth ref="tooth-73" tooth-pos='7' tooth-id='3' shape='rectangle'/>
+                        <tooth ref="tooth-74" tooth-pos='7' tooth-id='4' shape='square'/>
+                        <tooth ref="tooth-75" tooth-pos='7' tooth-id='5' shape='square'/>
+
+                    </div>
+                </b-card-body>
+            </b-collapse>
+        </b-card>
     </div>
     <div class='mt-5 ml-4'>
         <b-button v-on:click="mic()">Powiedz komendę</b-button>

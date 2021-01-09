@@ -6,7 +6,7 @@ import App from './App'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faTooth } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { BModal, BButton, TabsPlugin, FormInputPlugin, BForm, FormRadioPlugin, PopoverPlugin, ListGroupPlugin } from 'bootstrap-vue'
+import { BModal, BButton, TabsPlugin, FormInputPlugin, BForm, FormRadioPlugin, PopoverPlugin, ListGroupPlugin, CollapsePlugin, CardPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
@@ -22,6 +22,8 @@ Vue.use(FormInputPlugin)
 Vue.use(FormRadioPlugin)
 Vue.use(PopoverPlugin)
 Vue.use(ListGroupPlugin)
+Vue.use(CollapsePlugin)
+Vue.use(CardPlugin)
 
 /* eslint-disable no-new */
 new Vue({
