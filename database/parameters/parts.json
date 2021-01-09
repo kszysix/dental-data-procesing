@@ -1,5 +1,4 @@
 {
-    "_id" : ObjectId("5ff8f3feea0d0722d1b1969a"),
     "name" : "toothParts",
     "parts" : [ 
         {
