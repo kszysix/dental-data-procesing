@@ -1,6 +1,9 @@
 <template>
 <div>
-    <label class='text-left mt-3 ml-3'>{{ pesel }}</label>
+    <h3 v-if='name != null' class='text-left mt-3 ml-3 mb-3'>{{ name }}</h3>
+    <div v-if='name == null' class='mt-3 ml-3 mr-3 '>
+        <b-alert show variant="danger">Wprowadź dane pacjenta w zakładce <i>Dane osobowe</i></b-alert>
+    </div>
     <div class='mt-2 text-right ml-3 mr-3 dental-diagram'>
         <b-card class="mb-1">
             <b-card-header header-tag="header" class="p-1" role="tab">
@@ -108,12 +111,7 @@ export default {
     name: 'dentalDiagram',
     data() {
         return {
-            selected: 'adultTeeth',
-            options: [
-                { item: 'adultTeeth', name: 'Zęby stałe' },
-                { item: 'babyTeeth', name: 'Zęby mleczne' },
-            ],
-            pesel: 'wybierz osobę',
+            name: null,
             command: '',
             commandShow: false
         }
@@ -131,8 +129,8 @@ export default {
     methods: {
         showTeethData(person) {
             if (person.personalDetails.secondName == '' || person.personalDetails.secondName == null)
-                this.pesel = person.personalDetails.firstName + ' ' + person.personalDetails.surname
-            else this.pesel = person.personalDetails.firstName + ' ' + person.personalDetails.secondName + ' ' + person.personalDetails.surname
+                this.name = person.personalDetails.firstName + ' ' + person.personalDetails.surname
+            else this.name = person.personalDetails.firstName + ' ' + person.personalDetails.secondName + ' ' + person.personalDetails.surname
 
             // zęby stałe
             var teeth = person.permanentTeeth;
@@ -225,9 +223,6 @@ export default {
             }
             return { permanentTeeth: permanentTeeth, babyTeeth: babyTeeth };
         }
-    },
-    created() {
-        console.log(this.selected)
     },
     components: {
         Tooth
