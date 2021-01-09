@@ -26,10 +26,10 @@ export default {
     DentalDiagram
   },
   methods: {
-    setPerson(person) {
-      this.$refs["dental-diagram"].showTeethData(person)
+    getTeeth(person) {
+      this.$refs["dental-diagram"].showTeethData(person);
     },
-    getTeeth() {
+    setPerson() {
       var teeth = this.$refs["dental-diagram"].saveTeeth();
       this.$refs["personal-form"].saveData(teeth);
     }

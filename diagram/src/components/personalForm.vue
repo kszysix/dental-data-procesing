@@ -182,14 +182,14 @@ export default {
                 else {
                     this.notExists = false;
                 }
-                var person = JSON.parse(request.response);
+                //var person = JSON.parse(request.response);
 
                 this.showPersonData(request.response);
             }
         },
         showPersonData(person) {
             person = JSON.parse(person);
-            this.$emit('setPerson', person)
+            this.$emit('getTeeth', person)
 
             this.firstName = person.personalDetails.firstName;
             this.secondName = person.personalDetails.secondName;
@@ -225,20 +225,20 @@ export default {
             person.contactDetails = contactDetails;
 
             this.person = person;
-            this.$emit('getTeeth');
+            this.$emit('setPerson');
 
             // var primaryTeeth = {};
             // person.primaryTeeth = primaryTeeth;
         },
         saveData(permanentTeeth) {
             this.person.permanentTeeth = permanentTeeth;
-
+            this.person.versionDate = new Date().toISOString();
             var request = new XMLHttpRequest();
             request.open('POST', 'http://127.0.0.1:5000/savePersonData', false);
             request.send(JSON.stringify(this.person));
 
             var confirmation = request.response;
-            if (this.confirmSaveState == true) this.$emit('setPerson', this.person)
+            if (this.confirmSaveState == true) this.$emit('getTeeth', this.person)
         },
         savePersonalDetails() {
             if (this.firstNameState && this.surnameState && this.peselState) {

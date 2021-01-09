@@ -89,8 +89,10 @@
         </div>
     </div>
     <div class='mt-5 ml-4'>
-        <b-button v-on:click="mic()">Say command!</b-button>
+        <b-button v-on:click="mic()">Powiedz komendę</b-button>
+         <label class='text-left mt-3 ml-3' v-if="commandShow">Zrozumiana komenda: {{ command }}</label>
     </div>
+
 </div>
 </template>
 
@@ -105,7 +107,19 @@ export default {
                 { item: 'adultTeeth', name: 'Zęby stałe' },
                 { item: 'babyTeeth', name: 'Zęby mleczne' },
             ],
-            pesel: 'wybierz osobę'
+            pesel: 'wybierz osobę',
+            command: '',
+            commandShow: false
+        }
+    },
+    computed:{
+        commandState(){
+            if(this.command == ''){
+                this.commandShow = false;
+            }else{
+                this.commandShow = true;
+            
+            }
         }
     },
     methods: {
@@ -141,15 +155,19 @@ export default {
         },
         useCommand(obj) {
             var ref = "tooth-" + obj.toothId;
-            this.$refs[ref].setToothPartDesease(obj.toothId, obj.toothAilment, obj.toothPart);
+            this.$refs[ref].setToothPartDesease(obj.toothId, obj.toothDesease, obj.toothPart);
         },
         mic() {
+            this.command = '';
             var obj = this.getMicCommand();
+            this.command = obj.command;
+            console.log(obj.command);
             if (obj.next == 0) {
+                this.command = '';
                 return;
             }
             else if (obj.next == 1) {
-                console.log("id: " + obj.toothId+"  part: " + obj.toothPart + "  ailment: " + obj.toothAilment);
+                console.log("id: " + obj.toothId+"  part: " + obj.toothPart + "  desease: " + obj.toothDesease);
                 this.useCommand(obj);
             }
             else if (obj.next == 2) {
@@ -157,11 +175,14 @@ export default {
             }
             while (obj.next == 1 || obj.next == 2) {
                 obj = this.getMicCommand();
+                this.command = obj.command;
+                console.log(obj.command);
                 if(obj.next == 0){
+                    this.command = '';
                     return;
                 }
                 else if (obj.next == 1) {
-                    console.log("id: " + obj.toothId + "  part: " + obj.toothPart + "  ailment: " + obj.toothAilment);
+                    console.log("id: " + obj.toothId + "  part: " + obj.toothPart + "  desease: " + obj.toothDesease);
                     this.useCommand(obj);
                 }
                 else if (obj.next == 2) {

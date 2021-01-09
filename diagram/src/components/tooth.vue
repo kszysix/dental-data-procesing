@@ -59,10 +59,6 @@ export default {
             },
             parts: { A: 'A', B: 'B', C: 'C', D: 'D', E: 'E' },
             show: { A: false, B: false, C: false, D: false, E: false },
-            // colors: ["gray","lightseagreen", "lightsalmon", "darkslategray", "peru", "peachpuff", "internationalorange"],
-            // ailments: [null,"wypełnienie","próchnica","usunięty","proteza","przęsło","niewyrżnięty"],
-            // color: { A: 'gray', B: 'gray', C: 'gray', D: 'gray', E: 'gray' },
-            ailment: { A: null, B: null, C: null, D:null, E:null},
         }
     },
     created() {
@@ -76,18 +72,21 @@ export default {
     },
     methods: {
         saveTooth() {
-            // return this.ailment;
             return this.toothData.deseases;
         },
         setToothPartDesease(toothNumber, deseaseName, toothPart) {
             if(toothNumber == this.toothPos + this.toothId) {
-                this.show[toothPart] = false;
-                this.toothData.deseases[toothPart] = deseaseName;
-                // if (deseaseId == 5 || deseaseId == 6 || deseaseId == 7) {
-                //     for (let part in this.toothData.deseases) {
-                //         this.toothData.deseases[part] = deseaseId;
-                //     }
-                // }
+                if(toothPart == 'F'){
+                    this.setToothFullDesease(deseaseName);
+                }else{
+                    this.show[toothPart] = false;
+                    this.toothData.deseases[toothPart] = deseaseName;
+                    // if (deseaseId == 5 || deseaseId == 6 || deseaseId == 7) {
+                    //     for (let part in this.toothData.deseases) {
+                    //         this.toothData.deseases[part] = deseaseId;
+                    //     }
+                    // }
+            }
             }
         },
         checkPosition(toothPos, toothPart) {
@@ -104,6 +103,18 @@ export default {
                 else if (toothPart == this.parts.D) return 'leftbottom'
             }
         },
+        setToothFullDesease(deseaseName){
+            this.show['A'] = false;
+            this.toothData.deseases['A'] = deseaseName;
+            this.show['B'] = false;
+            this.toothData.deseases['B'] = deseaseName;
+            this.show['C'] = false;
+            this.toothData.deseases['C'] = deseaseName;
+            this.show['D'] = false;
+            this.toothData.deseases['D'] = deseaseName;
+            this.show['E'] = false;
+            this.toothData.deseases['E'] = deseaseName;
+        }
     },
     components: { DeseaseList }
 }

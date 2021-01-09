@@ -47,14 +47,13 @@ CORS(app)
 #	11. Nazewnictwo powierzchni zęba?
 #	12. 
 
-
+#	device_index=3
 
 @app.route('/mic', methods=['GET'])
 def mic():
 	r = sr.Recognizer()
 	with sr.Microphone(device_index=3) as source:
 		print("Say something!")
-
 		filename = 'startMic.wav'
 		data, fs = sf.read(filename, dtype='float32')  
 		sd.play(data, fs)
@@ -66,22 +65,25 @@ def mic():
 		sd.play(data, fs)
 
 	response = {
-		'command': 'Problem with Google Speech Recognition.',
+		'command': 'Problem with Speech Recognition.',
 		'toothId':0,
 		'toothPart':0,
-		'toothAilment':0,
+		'toothDesease':0,
 		'next':2
 	}
 
 	try:
 		command = r.recognize_google(audio,language="pl-PL")
-		print("Google Speech Recognition thinks you said " + command)
+		print("Speech Recognition thinks you said " + command)
 		response = createCommandJson(command)
 	except sr.UnknownValueError:
-	    print("Google Speech Recognition could not understand audio")
+	    print("Speech Recognition could not understand audio")
+	    response = json.dumps(response)
 	except sr.RequestError as e:
-	    print("Could not request results from Google Speech Recognition service; {0}".format(e))
+	    print("Could not request results from Speech Recognition service; {0}".format(e))
+	    response = json.dumps(response)
 	
+
 	response = json.loads(response)
 	if(response["next"] == 2):
 		filename = 'repeat.wav'
@@ -97,17 +99,17 @@ def createCommandJson(command):
 		'command': command,
 		'toothId':0,
 		'toothPart':0,
-		'toothAilment':0,
+		'toothDesease':0,
 		'next':2
 	}
-	if(command == "stop"):
+	if(command == "stop" or command == "100"):
 		response["next"] = 0
 		return json.dumps(response)
 
 	i = 0
 	toothId = ""
 	toothPart = ""
-	toothAilment = ""
+	toothDesease = ""
 
 	while i < len(command):
 		if(command[i] == " "):
@@ -115,44 +117,69 @@ def createCommandJson(command):
 			continue
 		elif(len(toothId)<2 and re.match('[1-8]', command[i])):
 			toothId = toothId + command[i]
-		elif(len(toothPart)<1 and re.match('[a-fA-F]', command[i])):
-			toothPart = str(command[i]).upper()
+		elif(len(toothPart) == 0 and re.match('[a-zA-Z,ó,ż,ź,ę,ą,ł,ń,ś]', command[i])):
+			while i < len(command) and command[i] != " ":
+				toothPart = toothPart + command[i]
+				i = i + 1
+
 		elif(re.match('[a-zA-Z,ó,ż,ź,ę,ą,ł,ń,ś]', command[i])):
-			toothAilment = toothAilment + command[i]
+			toothDesease = toothDesease + command[i]
 		i = i + 1 
 
-
+	print(toothPart)
 	myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 	dblist = myclient.list_database_names()
 	mydb = myclient["mydatabase"]
 	mycol = mydb["parameters"]
 
-	myquery = { "name": "ailments" }
+	# Tooth parts
+	myquery = { "name": "toothParts" }
 	exist = mycol.find(myquery).count() > 0
 	if(exist):
 		cursor = mycol.find(myquery)
 		list_cur = list(cursor)
 		a = dumps(list_cur, indent = 2) 
 		b = json.loads(str(a))
-		ailmentExists = False
-		for ailment in b[0]["ailments"]:
-			if(ailment == toothAilment):
-				ailmentExists = True
-		if(not ailmentExists):
-			toothAilment = ""
+		partExists = False
+		for item in b[0]["parts"]:
+			if(item["translation"] == toothPart):
+				toothPart = item["part"]
+				partExists = True
+		if(not partExists):
+			toothPart = ""
 	else:
 		print("Error: can't find parameter in mongo database")
-		toothAilment = ""
+		toothPart = ""
+
+	# Tooth desease
+	myquery = { "name": "deseases" }
+	exist = mycol.find(myquery).count() > 0
+	if(exist):
+		cursor = mycol.find(myquery)
+		list_cur = list(cursor)
+		a = dumps(list_cur, indent = 2) 
+		b = json.loads(str(a))
+		deseaseExists = False
+		for item in b[0]["deseases"]:
+
+			if(item["translation"] == toothDesease):
+				toothDesease = item["desease"]
+				deseaseExists = True
+		if(not deseaseExists):
+			toothDesease = ""
+	else:
+		print("Error: can't find parameter in mongo database")
+		toothDesease = ""
 
 
 	if (len(toothId) == 2 and
-		len(toothPart) == 1 and
-		len(toothAilment) > 4):
+		len(toothPart) > 0 and
+		len(toothDesease) > 4):
 		response["next"] = 1
 		response["command"] = command
 		response["toothId"] = toothId
 		response["toothPart"] = toothPart
-		response["toothAilment"] = toothAilment
+		response["toothDesease"] = toothDesease
 		return json.dumps(response)
 	else:
 		response["next"] = 2
