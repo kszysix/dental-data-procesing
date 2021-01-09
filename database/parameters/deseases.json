@@ -1,5 +1,4 @@
 {
-    "_id" : ObjectId("5ff1ba1fea0d0722d1b085fa"),
     "name" : "deseases",
     "deseases" : [ 
         {
