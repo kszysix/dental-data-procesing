@@ -151,6 +151,18 @@ export default {
             }
 
             // TODO : zęby mleczne
+            var teeth = person.primaryTeeth;
+            for (var i = 5; i < 9; i++) {
+                for (var j = 1; j < 6; j++) {
+                    var id = i.toString() + j.toString();
+                    var ref = "tooth-" + id;
+                    this.$refs[ref].setToothPartDesease(id, teeth[id]['A'], 'A');
+                    this.$refs[ref].setToothPartDesease(id, teeth[id]['B'], 'B');
+                    this.$refs[ref].setToothPartDesease(id, teeth[id]['C'], 'C');
+                    this.$refs[ref].setToothPartDesease(id, teeth[id]['D'], 'D');
+                    this.$refs[ref].setToothPartDesease(id, teeth[id]['E'], 'E');
+                }
+            }
 
         },
         getMicCommand() {
@@ -205,7 +217,15 @@ export default {
                     permanentTeeth[id] = this.$refs[ref].saveTooth();
                 }
             }
-            return permanentTeeth;
+            var babyTeeth = {}
+            for (var i = 5; i < 9; i++) {
+                for (var j = 1; j < 6; j++) {
+                    var id = i.toString() + j.toString();
+                    var ref = "tooth-" + id;
+                    babyTeeth[id] = this.$refs[ref].saveTooth();
+                }
+            }
+            return { permanentTeeth: permanentTeeth, babyTeeth: babyTeeth };
         }
     },
     created() {

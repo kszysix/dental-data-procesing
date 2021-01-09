@@ -90,13 +90,13 @@ export default {
             }
         },
         checkPosition(toothPos, toothPart) {
-            if (toothPos < 3) {
+            if (toothPos < 3 || (toothPos > 4 && toothPos < 7)) {
                 if (toothPart == this.parts.A || toothPart == this.parts.E) return 'top'
                 else if (toothPart == this.parts.B) return 'bottom'
                 else if (toothPart == this.parts.C) return 'righttop'
                 else if (toothPart == this.parts.D) return 'lefttop'
             }
-            else if (toothPos > 2) {
+            else if ((toothPos > 2 && toothPos < 5) || toothPos > 6) {
                 if (toothPart == this.parts.A) return 'top'
                 else if (toothPart == this.parts.B || toothPart == this.parts.E) return 'bottom'
                 else if (toothPart == this.parts.C) return 'rightbottom'

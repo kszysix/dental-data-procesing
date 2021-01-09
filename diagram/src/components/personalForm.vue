@@ -230,8 +230,9 @@ export default {
             // var primaryTeeth = {};
             // person.primaryTeeth = primaryTeeth;
         },
-        saveData(permanentTeeth) {
-            this.person.permanentTeeth = permanentTeeth;
+        saveData(teeth) {
+            this.person.permanentTeeth = teeth.permanentTeeth;
+            this.person.primaryTeeth = teeth.babyTeeth;
             this.person.versionDate = new Date().toISOString();
             var request = new XMLHttpRequest();
             request.open('POST', 'http://127.0.0.1:5000/savePersonData', false);
