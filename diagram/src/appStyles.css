@@ -109,3 +109,24 @@ p {
 .nav-link:hover {
   color: #1a877a
 }
+
+.desease-legend div {
+  border-radius: 5px!important;
+  margin: 2px;
+  border: 0px;
+  outline:none; 
+  border:0px;
+  color: black;
+  padding: 0.3rem 1rem;
+}
+
+.legend {
+  background-color: #f8f9fa;
+  padding: 10px;
+}
+
+.legend div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
