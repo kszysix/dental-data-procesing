@@ -101,3 +101,11 @@ p {
   background-color: #83a3a0;
   border-color: #83a3a0;
 }
+
+.nav-link {
+  color:  #1a877a
+}
+
+.nav-link:hover {
+  color: #1a877a
+}
