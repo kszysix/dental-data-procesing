@@ -1,0 +1,54 @@
+{
+    "_id" : ObjectId("5ff1ba1fea0d0722d1b085fa"),
+    "name" : "deseases",
+    "deseases" : [ 
+        {
+            "translation" : "wypełnienie",
+            "desease" : "wypełnienie"
+        }, 
+        {
+            "translation" : "wypełnianie",
+            "desease" : "wypełnienie"
+        }, 
+        {
+            "translation" : "pełnienie",
+            "desease" : "wypełnienie"
+        }, 
+        {
+            "translation" : "próchnica",
+            "desease" : "próchnica"
+        }, 
+        {
+            "translation" : "usunięty",
+            "desease" : "usunięty"
+        }, 
+        {
+            "translation" : "usunięte",
+            "desease" : "usunięty"
+        }, 
+        {
+            "translation" : "proteza",
+            "desease" : "proteza"
+        }, 
+        {
+            "translation" : "przęsło",
+            "desease" : "przęsło"
+        }, 
+        {
+            "translation" : "przęsła",
+            "desease" : "przęsło"
+        }, 
+        {
+            "translation" : "niewyrżnięty",
+            "desease" : "niewyrżnięty"
+        }, 
+        {
+            "translation" : "niewyrżnięte",
+            "desease" : "niewyrżnięty"
+        }, 
+        {
+            "translation" : "niewyrżniętych",
+            "desease" : "niewyrżnięty"
+        }
+    ]
+}

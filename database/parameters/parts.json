@@ -1,0 +1,86 @@
+{
+    "_id" : ObjectId("5ff8f3feea0d0722d1b1969a"),
+    "name" : "toothParts",
+    "parts" : [ 
+        {
+            "translation" : "A",
+            "part" : "A"
+        }, 
+        {
+            "translation" : "a",
+            "part" : "A"
+        }, 
+        {
+            "translation" : "wargowa",
+            "part" : "A"
+        }, 
+        {
+            "translation" : "wargowy",
+            "part" : "A"
+        }, 
+        {
+            "translation" : "B",
+            "part" : "B"
+        }, 
+        {
+            "translation" : "b",
+            "part" : "B"
+        }, 
+        {
+            "translation" : "C",
+            "part" : "C"
+        }, 
+        {
+            "translation" : "c",
+            "part" : "C"
+        }, 
+        {
+            "translation" : "D",
+            "part" : "D"
+        }, 
+        {
+            "translation" : "D",
+            "part" : "D"
+        }, 
+        {
+            "translation" : "d",
+            "part" : "D"
+        }, 
+        {
+            "translation" : "E",
+            "part" : "E"
+        }, 
+        {
+            "translation" : "e",
+            "part" : "E"
+        }, 
+        {
+            "translation" : "F",
+            "part" : "F"
+        }, 
+        {
+            "translation" : "f",
+            "part" : "F"
+        }, 
+        {
+            "translation" : "cały",
+            "part" : "F"
+        }, 
+        {
+            "translation" : "ful",
+            "part" : "F"
+        }, 
+        {
+            "translation" : "całe",
+            "part" : "F"
+        }, 
+        {
+            "translation" : "całej",
+            "part" : "F"
+        }, 
+        {
+            "translation" : "całych",
+            "part" : "F"
+        }
+    ]
+}
