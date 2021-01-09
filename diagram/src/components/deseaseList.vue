@@ -1,18 +1,20 @@
 <template>
     <div class='row'>
         <div class='col'>
-            <div
-                class="desease-button"
-                v-for="(desease, index) in deseases"
-                :index='index'
-                :key="desease.id">
-                <b-list-group-item
-                    :style='"background-color: " + desease.color'
-                    @click="clickDeseaseButton(desease.name, toothPart)"
-                    button>
-                    {{ desease.name }}
-                </b-list-group-item>
-            </div>
+            <b-list-group flush>
+                <div
+                    class="desease-button"
+                    v-for="(desease, index) in deseases"
+                    :index='index'
+                    :key="desease.id">
+                    <b-list-group-item
+                        :style='"background-color: " + desease.color'
+                        @click="clickDeseaseButton(desease.name, toothPart)"
+                        button>
+                        {{ desease.name }}
+                    </b-list-group-item>
+                </div>
+            </b-list-group>
         </div>
     </div>
 </template>

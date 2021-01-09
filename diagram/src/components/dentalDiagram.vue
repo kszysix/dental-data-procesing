@@ -60,6 +60,9 @@
                         <tooth ref="tooth-38" tooth-pos='3' tooth-id='8' shape='square'/>
 
                     </div>
+
+                    <desease-legend/>
+
                 </b-card-body>
             </b-collapse>
         <!-- </b-card> -->
@@ -100,6 +103,9 @@
                         <tooth ref="tooth-75" tooth-pos='7' tooth-id='5' shape='square'/>
 
                     </div>
+                    
+                    <desease-legend/>
+
                 </b-card-body>
             </b-collapse>
         </b-card>
@@ -114,6 +120,7 @@
 
 <script>
 import Tooth from './tooth';
+import DeseaseLegend from './deseaseLegend'
 export default {
     name: 'dentalDiagram',
     data() {
@@ -239,7 +246,8 @@ export default {
         }
     },
     components: {
-        Tooth
+        Tooth,
+        DeseaseLegend
     }
 }
 </script>
