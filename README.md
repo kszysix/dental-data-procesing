@@ -7,6 +7,8 @@
   
   > Install MongoDB Commutnity Server and Robo3T, follow: https://stackoverflow.com/questions/20796714/how-do-i-start-mongo-db-from-windows
   
+  > Add documents from database/parameters to 'parameters' collection
+  
 ## 2. Python libraries:
 
     > pip install speech_recognition
