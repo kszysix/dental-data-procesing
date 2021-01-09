@@ -1,5 +1,5 @@
 <template>
-    <div class='text-center legend mt-5'>
+    <div class='text-center legend mt-4 mb-3'>
         <label class='mb-3'>Lista oznaczeń</label>
         <b-list-group horizontal='md'>
             <div

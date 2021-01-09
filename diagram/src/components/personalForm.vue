@@ -10,7 +10,6 @@
             :state="personPeselState">
         </b-form-input>
         <b-button class='mt-2 mb-4' v-on:click="showData()">Wybierz osobę</b-button>
-        <p id="notExists" v-if="notExists">Nie ma takiego PESELu w bazie.</p>
     </div>
  
     <b-form class="ml-3 mr-3 personal-form round-corner">
@@ -99,8 +98,6 @@
     <div>
         <div class='row mt-2 ml-3 mb-4'>
             <b-button v-on:click="savePersonData()">Zapisz dane</b-button>
-            <p class='ml-2' id="saveState" v-if="cannotSaveState">Nie zapisano danych - dane niekompletne.</p>
-            <p class='ml-2' id="saveState" v-if="confirmSaveState">Zapisano dane do bazy.</p>
         </div>
     </div>
 </div>
@@ -127,8 +124,6 @@ export default {
             city: null,
             personPesel: null,
             notExists: false,
-            cannotSaveState: false,
-            confirmSaveState: false,
             cannotSaveState: false,
             confirmSaveState: false
         }
@@ -178,10 +173,12 @@ export default {
                 if (request.response == "0") {
                     console.log("Pesel: " + this.personPesel + " does not exist in mongoDatabase.");
                     this.notExists = true;
+                    this.makeToast('danger', 'Błąd odczytu danych', 'Nie znaleziono osoby o wskazanym peselu');
                     return;
                 }
                 else {
                     this.notExists = false;
+                    this.makeToast('success', 'Operacja powiodła się', 'Poprawnie wczytano dane')
                 }
 
                 this.showPersonData(request.response);
@@ -248,11 +245,13 @@ export default {
             if (personalDetails == null) {
                 this.cannotSaveState = true;
                 this.confirmSaveState = false;
+                this.makeToast('danger', 'Błąd zapisu danych', 'Dane nie są kompletne')
                 return;
             }
             else {
                 this.cannotSaveState = false;
                 this.confirmSaveState = true;
+                this.makeToast('success', 'Operacja powiodła się', 'Dane zostały poprawnie zapisane')
             }
 
             var contactDetails = this.saveContactDetails();
@@ -307,6 +306,13 @@ export default {
                 return null;
             }
         },
+        makeToast(variant, title, comment) {
+            this.$bvToast.toast(comment, {
+                title: title,
+                variant: variant,
+                solid: true,
+            })
+        }
     }
 }
 </script>
