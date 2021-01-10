@@ -95,11 +95,32 @@
           
     </b-form>
 
-    <div>
-        <div class='row mt-2 ml-3 mb-4'>
-            <b-button v-on:click="savePersonData()">Zapisz dane</b-button>
-        </div>
+    <div class='ml-3 mt-2'>
+        <b-button v-on:click="showSaveModal">Zapisz dane</b-button>
+        <b-button class='ml-2' @click="showResetModal">Resetuj dane</b-button>
     </div>
+
+    <b-modal
+        v-model="ifShowSaveModal"
+        class='confirmModal'
+        @ok='savePersonData' 
+        :hide-header='true'
+        cancel-title='Anuluj'
+        ok-title='Zapisz'
+        centered>
+        Czy skończyłeś wprowadzanie danych i chcesz zapisać nową wersję diagramu w systemie?
+    </b-modal>
+
+    <b-modal
+        v-model="ifShowResetModal"
+        class='confirmModal'
+        @ok='resetPerson' 
+        :hide-header='true'
+        cancel-title='Anuluj'
+        ok-title='Resetuj'
+        centered>
+        Czy na pewno chcesz resetować wprowadzone dane?
+    </b-modal>
 </div>
 </template>
 
@@ -125,7 +146,27 @@ export default {
             personPesel: null,
             notExists: false,
             cannotSaveState: false,
-            confirmSaveState: false
+            confirmSaveState: false,
+            ifShowSaveModal: false,
+            ifShowResetModal: false
+        }
+    },
+    watch: {
+        pesel: function(val) {
+            if (val.length > 5) {
+                let year = val.substring(0,2);
+                let month = val.substring(2,4);
+                let day = val.substring(4,6);
+                console.log(year, month, day)
+                if (parseInt(month) < 13) {
+                    this.birthDate = '19' + year + '-' + month + '-' + day;
+                }
+                else {
+                    month = (parseInt(month) - 20).toString();
+                    if (month.length == 1) month = '0' + month;
+                    this.birthDate = '20' + year + '-' + month + '-' + day;
+                }
+            } 
         }
     },
     computed: {
@@ -174,6 +215,7 @@ export default {
                     console.log("Pesel: " + this.personPesel + " does not exist in mongoDatabase.");
                     this.notExists = true;
                     this.makeToast('danger', 'Błąd odczytu danych', 'Nie znaleziono osoby o wskazanym peselu');
+                    this.resetPerson();
                     return;
                 }
                 else {
@@ -183,6 +225,9 @@ export default {
 
                 this.showPersonData(request.response);
             }
+        },
+        resetPerson() {
+            this.showPersonData(null);
         },
         showDataVersion(time){
             this.cannotSaveState = false;
@@ -220,26 +265,44 @@ export default {
             }
         },
         showPersonData(person) {
-            person = JSON.parse(person);
-            this.$emit('getTeeth', person)
+            if (person != null) {
+                person = JSON.parse(person);
+                this.$emit('getTeeth', person)
 
-            this.versionDate = person.versionDate;
+                this.versionDate = person.versionDate;
 
-            this.firstName = person.personalDetails.firstName;
-            this.secondName = person.personalDetails.secondName;
-            this.surname = person.personalDetails.surname;
-            this.birthDate = person.personalDetails.birthDate;
-            this.pesel = person.personalDetails.pesel;
-            this.gender = person.personalDetails.gender;
-
-            this.phoneNumber = person.contactDetails.phoneNumber;
-            this.email = person.contactDetails.email;
-
-            this.street = person.contactDetails.street;
-            this.streetNumber = person.contactDetails.streetNumber;
-            this.boxNumber = person.contactDetails.boxNumber;
-            this.zipCode = person.contactDetails.zipCode;
-            this.city = person.contactDetails.city;
+                this.firstName = person.personalDetails.firstName;
+                this.secondName = person.personalDetails.secondName;
+                this.surname = person.personalDetails.surname;
+                this.birthDate = person.personalDetails.birthDate;
+                this.pesel = person.personalDetails.pesel;
+                this.gender = person.personalDetails.gender;
+                this.phoneNumber = person.contactDetails.phoneNumber;
+                this.email = person.contactDetails.email;
+                this.street = person.contactDetails.street;
+                this.streetNumber = person.contactDetails.streetNumber;
+                this.boxNumber = person.contactDetails.boxNumber;
+                this.zipCode = person.contactDetails.zipCode;
+                this.city = person.contactDetails.city;
+            }
+            else {
+                this.$emit('getTeeth', null)
+                this.versionDate = null;
+                this.firstName = null;
+                this.secondName = null;
+                this.surname = null;
+                this.birthDate = null;
+                this.pesel = null;
+                this.gender = null;
+                this.phoneNumber = null;
+                this.email = null;
+                this.street = null;
+                this.streetNumber = null;
+                this.boxNumber = null;
+                this.zipCode = null;
+                this.city = null;
+                this.personPesel = null;
+            }
         },
         savePersonData() {
             var person = {};
@@ -307,6 +370,15 @@ export default {
             else {
                 return null;
             }
+        },
+        showSaveModal() {
+            if (this.firstNameState && this.surnameState && this.peselState)
+                this.ifShowSaveModal = true;
+            else
+                this.makeToast('danger', 'Błąd zapisu danych', 'Dane nie są kompletne');
+        },
+        showResetModal() {
+            this.ifShowResetModal = true;
         },
         makeToast(variant, title, comment) {
             this.$bvToast.toast(comment, {

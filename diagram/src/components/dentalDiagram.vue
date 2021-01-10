@@ -142,39 +142,42 @@ export default {
     },
     methods: {
         showTeethData(person) {
-            // person = JSON.parse(person)
-            if (person.personalDetails.secondName == '' || person.personalDetails.secondName == null)
-                this.name = person.personalDetails.firstName + ' ' + person.personalDetails.surname
-            else this.name = person.personalDetails.firstName + ' ' + person.personalDetails.secondName + ' ' + person.personalDetails.surname
-            this.versionDate = moment(String(person.versionDate)).format('DD-MM-YYYY HH:mm');    
-            // zęby stałe
-            var teeth = person.permanentTeeth;
-            for (var i = 1; i < 5; i++) {
-                for (var j = 1; j < 9; j++) {
-                    var id = i.toString() + j.toString();
-                    var ref = "tooth-" + id;
-                    this.$refs[ref].setToothPartDesease(id, teeth[id]['A'], 'A');
-                    this.$refs[ref].setToothPartDesease(id, teeth[id]['B'], 'B');
-                    this.$refs[ref].setToothPartDesease(id, teeth[id]['C'], 'C');
-                    this.$refs[ref].setToothPartDesease(id, teeth[id]['D'], 'D');
-                    this.$refs[ref].setToothPartDesease(id, teeth[id]['E'], 'E');
+            if (person == null) {
+                this.resetData();
+            }
+            else {
+                if (person.personalDetails.secondName == '' || person.personalDetails.secondName == null)
+                    this.name = person.personalDetails.firstName + ' ' + person.personalDetails.surname
+                else this.name = person.personalDetails.firstName + ' ' + person.personalDetails.secondName + ' ' + person.personalDetails.surname
+                this.versionDate = moment(String(person.versionDate)).format('DD-MM-YYYY HH:mm');    
+                // zęby stałe
+                var teeth = person.permanentTeeth;
+                for (var i = 1; i < 5; i++) {
+                    for (var j = 1; j < 9; j++) {
+                        var id = i.toString() + j.toString();
+                        var ref = "tooth-" + id;
+                        this.$refs[ref].setToothPartDesease(id, teeth[id]['A'], 'A');
+                        this.$refs[ref].setToothPartDesease(id, teeth[id]['B'], 'B');
+                        this.$refs[ref].setToothPartDesease(id, teeth[id]['C'], 'C');
+                        this.$refs[ref].setToothPartDesease(id, teeth[id]['D'], 'D');
+                        this.$refs[ref].setToothPartDesease(id, teeth[id]['E'], 'E');
+                    }
+                }
+
+                // zęby mleczne
+                var teeth = person.primaryTeeth;
+                for (var i = 5; i < 9; i++) {
+                    for (var j = 1; j < 6; j++) {
+                        var id = i.toString() + j.toString();
+                        var ref = "tooth-" + id;
+                        this.$refs[ref].setToothPartDesease(id, teeth[id]['A'], 'A');
+                        this.$refs[ref].setToothPartDesease(id, teeth[id]['B'], 'B');
+                        this.$refs[ref].setToothPartDesease(id, teeth[id]['C'], 'C');
+                        this.$refs[ref].setToothPartDesease(id, teeth[id]['D'], 'D');
+                        this.$refs[ref].setToothPartDesease(id, teeth[id]['E'], 'E');
+                    }
                 }
             }
-
-            // zęby mleczne
-            var teeth = person.primaryTeeth;
-            for (var i = 5; i < 9; i++) {
-                for (var j = 1; j < 6; j++) {
-                    var id = i.toString() + j.toString();
-                    var ref = "tooth-" + id;
-                    this.$refs[ref].setToothPartDesease(id, teeth[id]['A'], 'A');
-                    this.$refs[ref].setToothPartDesease(id, teeth[id]['B'], 'B');
-                    this.$refs[ref].setToothPartDesease(id, teeth[id]['C'], 'C');
-                    this.$refs[ref].setToothPartDesease(id, teeth[id]['D'], 'D');
-                    this.$refs[ref].setToothPartDesease(id, teeth[id]['E'], 'E');
-                }
-            }
-
         },
         getMicCommand() {
             var request = new XMLHttpRequest();
@@ -259,7 +262,34 @@ export default {
                 this.oldestVersion = false;
                 this.newestVersion = false;
             }
+        },
+    resetData() {
+        this.name = null;
+        this.versionDate = null;
+
+        for (var i = 1; i < 5; i++) {
+            for (var j = 1; j < 9; j++) {
+                var id = i.toString() + j.toString();
+                var ref = "tooth-" + id;
+                this.$refs[ref].setToothPartDesease(id, null, 'A');
+                this.$refs[ref].setToothPartDesease(id, null, 'B');
+                this.$refs[ref].setToothPartDesease(id, null, 'C');
+                this.$refs[ref].setToothPartDesease(id, null, 'D');
+                this.$refs[ref].setToothPartDesease(id, null, 'E');
+            }
         }
+        for (var i = 5; i < 9; i++) {
+            for (var j = 1; j < 6; j++) {
+                var id = i.toString() + j.toString();
+                var ref = "tooth-" + id;
+                this.$refs[ref].setToothPartDesease(id, null, 'A');
+                this.$refs[ref].setToothPartDesease(id, null, 'B');
+                this.$refs[ref].setToothPartDesease(id, null, 'C');
+                this.$refs[ref].setToothPartDesease(id, null, 'D');
+                this.$refs[ref].setToothPartDesease(id, null, 'E');
+            }
+        }
+    },
     },
     components: {
         Tooth,

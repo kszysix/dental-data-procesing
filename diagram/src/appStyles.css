@@ -59,14 +59,14 @@ path {
 }
 
 .desease-button button {
-    border-radius: 5px!important;
-    margin: 2px;
-    border: 0px;
-    outline:none; 
-    border:0px;
-    color: black;
-    padding: 0.3rem 1rem;
-    width: 200px
+  border-radius: 5px!important;
+  margin: 2px;
+  border: 0px;
+  outline:none; 
+  border:0px;
+  color: black;
+  padding: 0.3rem 1rem;
+  width: 200px
 }
 
 .desease-button button:hover {
