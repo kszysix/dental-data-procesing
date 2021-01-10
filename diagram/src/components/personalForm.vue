@@ -153,20 +153,21 @@ export default {
     },
     watch: {
         pesel: function(val) {
-            if (val.length > 5) {
-                let year = val.substring(0,2);
-                let month = val.substring(2,4);
-                let day = val.substring(4,6);
-                console.log(year, month, day)
-                if (parseInt(month) < 13) {
-                    this.birthDate = '19' + year + '-' + month + '-' + day;
-                }
-                else {
-                    month = (parseInt(month) - 20).toString();
-                    if (month.length == 1) month = '0' + month;
-                    this.birthDate = '20' + year + '-' + month + '-' + day;
-                }
-            } 
+            if (val != null) {
+                if (val.length > 5) {
+                    let year = val.substring(0,2);
+                    let month = val.substring(2,4);
+                    let day = val.substring(4,6);
+                    if (parseInt(month) < 13) {
+                        this.birthDate = '19' + year + '-' + month + '-' + day;
+                    }
+                    else {
+                        month = (parseInt(month) - 20).toString();
+                        if (month.length == 1) month = '0' + month;
+                        this.birthDate = '20' + year + '-' + month + '-' + day;
+                    }
+                } 
+            }
         }
     },
     computed: {

@@ -110,11 +110,14 @@
             </b-collapse>
         </b-card>
     </div>
-    <div class='mt-5 ml-4'>
-
-        <b-button @click="mic()" :disabled="micOn" >Powiedz komendę</b-button>
-        <b-button @click="endMic = true" v-if="micOn" >Zakończ komunikację głosową</b-button>
-
+    <div class='row mt-5 ml-4'>
+        <!-- <div v-if="!micOn"> -->
+        <div>
+            <b-button @click="mic()">Powiedz komendę</b-button>
+        </div>
+        <!-- <div v-else>
+            <b-button @click="endMic">Zakończ komunikację głosową</b-button>
+        </div> -->
     </div>
 
 </div>
@@ -134,7 +137,16 @@ export default {
             oldestVersion: false,
             newestVersion: true,
             micOn: false,
-            endMic: false
+            endMic: false,
+            newCommand: 0,
+        }
+    },
+    watch: {
+        newCommand: async function(val) {
+            if (this.micOn) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+                this.mic();
+            }
         }
     },
     computed:{
@@ -186,10 +198,12 @@ export default {
             return JSON.parse(request.response);
         },
         useCommand(obj) {
+            let info = 'Numer zęba: ' + obj.toothId + '\nCzęść zęba: ' + obj.toothPart + '\nChoroba: ' + obj.toothDesease;
+            this.makeToast('default', 'Wczytano następujące zmiany', info);
             var ref = "tooth-" + obj.toothId;
             this.$refs[ref].setToothPartDesease(obj.toothId, obj.toothDesease, obj.toothPart);
         },
-        mic() {
+        async mic() {
             this.micOn = true;
             this.command = '';
             var obj = this.getMicCommand();
@@ -203,7 +217,9 @@ export default {
             }
             else if (obj.next == 1) {
                 console.log("id: " + obj.toothId+"  part: " + obj.toothPart + "  desease: " + obj.toothDesease);
-                this.useCommand(obj);
+                await this.useCommand(obj);
+                this.newCommand++;
+                return;
             }
             else if (obj.next == 2) {
                 console.log("Please, repeat command:")
@@ -220,7 +236,9 @@ export default {
                 }
                 else if (obj.next == 1) {
                     console.log("id: " + obj.toothId + "  part: " + obj.toothPart + "  desease: " + obj.toothDesease);
-                    this.useCommand(obj);
+                    await this.useCommand(obj);
+                    this.newCommand++;
+                    return;
                 }
                 else if (obj.next == 2) {
                     console.log("Please, repeat command:");
@@ -263,33 +281,40 @@ export default {
                 this.newestVersion = false;
             }
         },
-    resetData() {
-        this.name = null;
-        this.versionDate = null;
+        resetData() {
+            this.name = null;
+            this.versionDate = null;
 
-        for (var i = 1; i < 5; i++) {
-            for (var j = 1; j < 9; j++) {
-                var id = i.toString() + j.toString();
-                var ref = "tooth-" + id;
-                this.$refs[ref].setToothPartDesease(id, null, 'A');
-                this.$refs[ref].setToothPartDesease(id, null, 'B');
-                this.$refs[ref].setToothPartDesease(id, null, 'C');
-                this.$refs[ref].setToothPartDesease(id, null, 'D');
-                this.$refs[ref].setToothPartDesease(id, null, 'E');
+            for (var i = 1; i < 5; i++) {
+                for (var j = 1; j < 9; j++) {
+                    var id = i.toString() + j.toString();
+                    var ref = "tooth-" + id;
+                    this.$refs[ref].setToothPartDesease(id, null, 'A');
+                    this.$refs[ref].setToothPartDesease(id, null, 'B');
+                    this.$refs[ref].setToothPartDesease(id, null, 'C');
+                    this.$refs[ref].setToothPartDesease(id, null, 'D');
+                    this.$refs[ref].setToothPartDesease(id, null, 'E');
+                }
             }
-        }
-        for (var i = 5; i < 9; i++) {
-            for (var j = 1; j < 6; j++) {
-                var id = i.toString() + j.toString();
-                var ref = "tooth-" + id;
-                this.$refs[ref].setToothPartDesease(id, null, 'A');
-                this.$refs[ref].setToothPartDesease(id, null, 'B');
-                this.$refs[ref].setToothPartDesease(id, null, 'C');
-                this.$refs[ref].setToothPartDesease(id, null, 'D');
-                this.$refs[ref].setToothPartDesease(id, null, 'E');
+            for (var i = 5; i < 9; i++) {
+                for (var j = 1; j < 6; j++) {
+                    var id = i.toString() + j.toString();
+                    var ref = "tooth-" + id;
+                    this.$refs[ref].setToothPartDesease(id, null, 'A');
+                    this.$refs[ref].setToothPartDesease(id, null, 'B');
+                    this.$refs[ref].setToothPartDesease(id, null, 'C');
+                    this.$refs[ref].setToothPartDesease(id, null, 'D');
+                    this.$refs[ref].setToothPartDesease(id, null, 'E');
+                }
             }
+        },
+        makeToast(variant, title, comment) {
+            this.$bvToast.toast(comment, {
+                title: title,
+                variant: variant,
+                solid: true,
+            })
         }
-    },
     },
     components: {
         Tooth,

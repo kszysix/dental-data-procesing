@@ -76,9 +76,10 @@ export default {
         },
         setToothPartDesease(toothNumber, deseaseName, toothPart) {
             if(toothNumber == this.toothPos + this.toothId) {
-                if(toothPart == 'F'){
+                if (toothPart == 'F') {
                     this.setToothFullDesease(deseaseName);
-                }else{
+                }
+                else {
                     this.show[toothPart] = false;
                     this.toothData.deseases[toothPart] = deseaseName;
                     // if (deseaseId == 5 || deseaseId == 6 || deseaseId == 7) {
@@ -86,8 +87,9 @@ export default {
                     //         this.toothData.deseases[part] = deseaseId;
                     //     }
                     // }
+                }
             }
-            }
+            return;
         },
         checkPosition(toothPos, toothPart) {
             if (toothPos == 1 || toothPos == 5) {
