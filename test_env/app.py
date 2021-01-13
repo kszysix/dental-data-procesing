@@ -310,20 +310,20 @@ def getSaveData():
 def startRunner():
 	myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 	mydb = myclient["mydatabase"]
-	print(mydb.list_collection_names()) 
-	print("parameters" in mydb.list_collection_names()) 
+	print("Uploading parameters to MongoDB...")
 	if("parameters" in mydb.list_collection_names()):
-		return 0
-	else:
-		mycol = mydb["parameters"]
-		with open('../database/parameters/deseases.json',encoding="utf-8") as f:
+		mydb.parameters.drop()
+	
+	mycol = mydb["parameters"]
+	with open('../database/parameters/deseases.json',encoding="utf-8") as f:
 
-			deseases = json.load(f)
-			mycol.insert_one(deseases)
-		with open('../database/parameters/parts.json',encoding="utf-8") as f:
+		deseases = json.load(f)
+		mycol.insert_one(deseases)
+	with open('../database/parameters/parts.json',encoding="utf-8") as f:
 
-			parts = json.load(f)
-			mycol.insert_one(parts)
+		parts = json.load(f)
+		mycol.insert_one(parts)
+	print("Parameters uploaded!")
 if __name__ == "__main__":
     startRunner()
 
