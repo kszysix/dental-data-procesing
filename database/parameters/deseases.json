@@ -2,6 +2,26 @@
     "name" : "deseases",
     "deseases" : [ 
         {
+            "translation" : "zdrowy",
+            "desease" : null
+        }, 
+        {
+            "translation" : "zdrowe",
+            "desease" : null
+        }, 
+        {
+            "translation" : "zdrowych",
+            "desease" : null
+        }, 
+        {
+            "translation" : "bytek",
+            "desease" : "ubytek"
+        }, 
+        {
+            "translation" : "ubytek",
+            "desease" : "ubytek"
+        }, 
+        {
             "translation" : "wypełnienie",
             "desease" : "wypełnienie"
         }, 
@@ -27,6 +47,30 @@
         }, 
         {
             "translation" : "proteza",
+            "desease" : "proteza"
+        }, 
+        {
+            "translation" : "most",
+            "desease" : "proteza"
+        }, 
+        {
+            "translation" : "moc",
+            "desease" : "proteza"
+        }, 
+        {
+            "translation" : "korona",
+            "desease" : "proteza"
+        }, 
+        {
+            "translation" : "implant",
+            "desease" : "proteza"
+        }, 
+        {
+            "translation" : "korone",
+            "desease" : "proteza"
+        }, 
+        {
+            "translation" : "mosty",
             "desease" : "proteza"
         }, 
         {

@@ -94,7 +94,10 @@ def mic():
 		data, fs = sf.read(filename, dtype='float32')  
 		sd.play(data, fs)
 		status = sd.wait()
-
+	if(response["next"] == 0):
+		filename = 'endMic.wav'
+		data, fs = sf.read(filename, dtype='float32')  
+		sd.play(data, fs)
 	return response
 
 
@@ -106,7 +109,8 @@ def createCommandJson(command):
 		'toothDesease':0,
 		'next':2
 	}
-	if(command == "stop" or command == "100" or command == "stot"):
+	command = command.lower()
+	if(command == "stop" or command == "100" or command == "stot" or command == "pop" or command == "sto"):
 		response["next"] = 0
 		return json.dumps(response)
 
@@ -129,7 +133,6 @@ def createCommandJson(command):
 			toothDesease = toothDesease + command[i]
 		i = i + 1 
 
-	print(toothPart)
 	myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 	dblist = myclient.list_database_names()
 	mydb = myclient["mydatabase"]
@@ -173,16 +176,25 @@ def createCommandJson(command):
 	else:
 		print("Error: can't find parameter in mongo database")
 		toothDesease = ""
+	healthyTooth = False
+	if(toothDesease == None):
+		healthyTooth = True
+		toothDesease = "zdrowy"
+		print("id: " + toothId + "  part: " + toothPart + "  desease: " + "zdrowy (null)")
+	else:
+		print("id: " + toothId + "  part: " + toothPart + "  desease: " + toothDesease)
 
-	print("id: " + toothId + "  part: " + toothPart + "  desease: " + toothDesease)
 	if (len(toothId) == 2 and
 		len(toothPart) > 0 and
-		len(toothDesease) > 4):
+		len(toothDesease) > 3):
 		response["next"] = 1
 		response["command"] = command
 		response["toothId"] = toothId
 		response["toothPart"] = toothPart
-		response["toothDesease"] = toothDesease
+		if healthyTooth:
+			response["toothDesease"] = None
+		else:
+			response["toothDesease"] = toothDesease
 		return json.dumps(response)
 	else:
 		response["next"] = 2
@@ -232,12 +244,11 @@ def getPersonDataVersion():
 	mydb = myclient["mydatabase"]
 	mycol = mydb["customers"]
 	message = str(request.data.decode('UTF-8'))
-	print(message)
+
 	message = dumps(message)
 	message = json.loads(message)
 	message = json.loads(message)
-	print("MSG")
-	print(message)
+
 	myquery = { "personalDetails.pesel": message["pesel"] }
 	counted = mycol.find(myquery).count()
 	exist = counted > 0
@@ -250,11 +261,10 @@ def getPersonDataVersion():
 		for x in cursor:
 			dates.append(str(x["versionDate"]))
 
-		print(dates)
 		dates.sort(key = lambda date: datetime.strptime(date, "%Y-%m-%dT%H:%M:%S.%f%z")) 
-		print(dates)
+
 		index = dates.index(message["versionDate"])
-		print("index "+str(index))
+
 		resultIndex = index;
 		if(message["time"] == "-1"):
 			if(index != 0):
@@ -300,20 +310,20 @@ def getSaveData():
 def startRunner():
 	myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 	mydb = myclient["mydatabase"]
-	print(mydb.list_collection_names()) 
-	print("parameters" in mydb.list_collection_names()) 
+	print("Uploading parameters to MongoDB...")
 	if("parameters" in mydb.list_collection_names()):
-		return 0
-	else:
-		mycol = mydb["parameters"]
-		with open('../database/parameters/deseases.json',encoding="utf-8") as f:
+		mydb.parameters.drop()
+	
+	mycol = mydb["parameters"]
+	with open('../database/parameters/deseases.json',encoding="utf-8") as f:
 
-			deseases = json.load(f)
-			mycol.insert_one(deseases)
-		with open('../database/parameters/parts.json',encoding="utf-8") as f:
+		deseases = json.load(f)
+		mycol.insert_one(deseases)
+	with open('../database/parameters/parts.json',encoding="utf-8") as f:
 
-			parts = json.load(f)
-			mycol.insert_one(parts)
+		parts = json.load(f)
+		mycol.insert_one(parts)
+	print("Parameters uploaded!")
 if __name__ == "__main__":
     startRunner()
 

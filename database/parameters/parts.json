@@ -10,11 +10,19 @@
             "part" : "A"
         }, 
         {
-            "translation" : "wargowa",
+            "translation" : "bliższa",
             "part" : "A"
         }, 
         {
-            "translation" : "wargowy",
+            "translation" : "bliższe",
+            "part" : "A"
+        }, 
+        {
+            "translation" : "mezjalna",
+            "part" : "A"
+        }, 
+        {
+            "translation" : "mezjalne",
             "part" : "A"
         }, 
         {
@@ -26,6 +34,34 @@
             "part" : "B"
         }, 
         {
+            "translation" : "żująca",
+            "part" : "B"
+        }, 
+        {
+            "translation" : "żujące",
+            "part" : "B"
+        }, 
+        {
+            "translation" : "żując",
+            "part" : "B"
+        }, 
+        {
+            "translation" : "sieczna",
+            "part" : "B"
+        }, 
+        {
+            "translation" : "sieczny",
+            "part" : "B"
+        }, 
+        {
+            "translation" : "sieczne",
+            "part" : "B"
+        }, 
+        {
+            "translation" : "siecznych",
+            "part" : "B"
+        }, 
+        {
             "translation" : "C",
             "part" : "C"
         }, 
@@ -34,8 +70,32 @@
             "part" : "C"
         }, 
         {
-            "translation" : "D",
-            "part" : "D"
+            "translation" : "dalsza",
+            "part" : "C"
+        }, 
+        {
+            "translation" : "dalsze",
+            "part" : "C"
+        }, 
+        {
+            "translation" : "dal",
+            "part" : "C"
+        }, 
+        {
+            "translation" : "dalszych",
+            "part" : "C"
+        }, 
+        {
+            "translation" : "dystalna",
+            "part" : "C"
+        }, 
+        {
+            "translation" : "dystalne",
+            "part" : "C"
+        }, 
+        {
+            "translation" : "dystalny",
+            "part" : "C"
         }, 
         {
             "translation" : "D",
@@ -46,11 +106,71 @@
             "part" : "D"
         }, 
         {
+            "translation" : "policzkowa",
+            "part" : "D"
+        }, 
+        {
+            "translation" : "policzkowe",
+            "part" : "D"
+        }, 
+        {
+            "translation" : "policzkowych",
+            "part" : "D"
+        }, 
+        {
+            "translation" : "wargowa",
+            "part" : "D"
+        }, 
+        {
+            "translation" : "wargowe",
+            "part" : "D"
+        }, 
+        {
+            "translation" : "wargowych",
+            "part" : "D"
+        }, 
+        {
+            "translation" : "przedsionkowa",
+            "part" : "D"
+        }, 
+        {
+            "translation" : "przedsionkowe",
+            "part" : "D"
+        }, 
+        {
+            "translation" : "przedsionkowy",
+            "part" : "D"
+        }, 
+        {
             "translation" : "E",
             "part" : "E"
         }, 
         {
             "translation" : "e",
+            "part" : "E"
+        }, 
+        {
+            "translation" : "językowa",
+            "part" : "E"
+        }, 
+        {
+            "translation" : "językowe",
+            "part" : "E"
+        }, 
+        {
+            "translation" : "językowych",
+            "part" : "E"
+        }, 
+        {
+            "translation" : "podniebienna",
+            "part" : "E"
+        }, 
+        {
+            "translation" : "podniebienie",
+            "part" : "E"
+        }, 
+        {
+            "translation" : "podniebienne",
             "part" : "E"
         }, 
         {
