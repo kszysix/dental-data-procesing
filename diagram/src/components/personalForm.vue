@@ -18,6 +18,10 @@
 
         <div class="row">
             <div class="col sm">
+                <label for="surname">Nazwisko</label>
+                <b-form-input id="surname" type="text" v-model="surname" :state="surnameState"></b-form-input>
+            </div>
+            <div class="col sm">
                 <label for="first-name">Pierwsze imię</label>
                 <b-form-input id="first-name" type="text" v-model="firstName" :state="firstNameState"></b-form-input>
             </div>
@@ -25,20 +29,16 @@
                 <label for="second-name">Drugie imię</label>
                 <b-form-input id="second-name" type="text" v-model="secondName"></b-form-input>
             </div>
-            <div class="col sm">
-                <label for="surname">Nazwisko</label>
-                <b-form-input id="surname" type="text" v-model="surname" :state="surnameState"></b-form-input>
-            </div>
         </div>
 
         <div class="row mt-3 mb-2">
             <div class="col sm">
-                <label for="birth-date">Data urodzenia</label>
-                <b-form-input id="birth-date" type="date" v-model="birthDate"></b-form-input>
-            </div>
-            <div class="col sm">
                 <label for="pesel">Pesel</label>
                 <b-form-input id="pesel" type="text" v-model="pesel" :state="peselState"></b-form-input>
+            </div>
+            <div class="col sm">
+                <label for="birth-date">Data urodzenia</label>
+                <b-form-input id="birth-date" type="date" v-model="birthDate"></b-form-input>
             </div>
             <div class="col sm">
                 <label for="gender">Płeć</label>

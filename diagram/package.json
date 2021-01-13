@@ -15,7 +15,8 @@
     "@fortawesome/vue-fontawesome": "^2.0.0",
     "bootstrap": "^4.5.3",
     "bootstrap-vue": "^2.18.1",
-    "vue": "^2.6.12"
+    "vue": "^2.6.12",
+    "vue-html-to-paper": "^1.3.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

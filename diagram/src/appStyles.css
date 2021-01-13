@@ -21,6 +21,14 @@
   margin-right: -15px;
 }
 
+@media print {
+  .tooth {
+    height: 50px;
+    margin-left: -28px;
+    margin-right: -28px;
+  }
+}
+
 .tooth:hover{
   height: 100px!important;
   margin-top: -15px;

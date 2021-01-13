@@ -1,6 +1,6 @@
 <template>
     <div class='text-center legend mt-4 mb-3'>
-        <label class='mb-3'>Lista oznaczeń</label>
+        <label class='mb-3'>Lista oznaczeń:</label>
         <b-list-group horizontal='md'>
             <div
                 class="desease-legend mr-1 text-center"

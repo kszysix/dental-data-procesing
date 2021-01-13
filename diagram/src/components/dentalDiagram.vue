@@ -1,7 +1,9 @@
 <template>
 <div>
-    <h3 v-if='name != null' class='text-left mt-3 ml-3 mb-3'>{{ name }}</h3>
-    <h5 v-if='name != null' class='text-left mt-3 ml-3'>Data wersji diagramu: {{ versionDate }}</h5>
+    <div>
+        <h3 v-if='name != null' class='text-left mt-3 ml-3 mb-3'>{{ name }}</h3>
+        <h5 v-if='name != null' class='text-left mt-3 ml-3'>Data wersji diagramu: {{ versionDate }}</h5>
+    </div>
     <div v-if='name == null' class='mt-3 ml-3 mr-3 '>
         <b-alert show variant="danger">Wprowadź dane pacjenta w zakładce <i>Dane osobowe</i></b-alert>
     </div>
@@ -21,7 +23,7 @@
 
             <b-collapse id="accordion-1" visible accordion="my-accordion" role="tabpanel">
                 <b-card-body>
-                    <div class='diagram'>
+                    <div class='diagram' id="printPrimaryDiagram">
                         
                         <div class="row text-center tooth-row mt-4">
                             <tooth ref="tooth-18" tooth-pos='1' tooth-id='8' shape='square'/>
@@ -62,8 +64,12 @@
                         </div>
 
                     </div>
-
-                    <desease-legend/>
+                    <div id="printLegend">
+                        <desease-legend/>
+                    </div>
+                    <div v-if='name != null' class='mt-2 mr-3 text-right'>
+                        <b-button @click="printPdf('primary')">Pobierz plik PDF</b-button>
+                    </div>
 
                 </b-card-body>
             </b-collapse>
@@ -75,7 +81,7 @@
             </b-card-header>
             <b-collapse id="accordion-2" visible accordion="my-accordion" role="tabpanel">
                 <b-card-body>
-                    <div class='diagram'>
+                    <div class='diagram' id="printBabyDiagram">
 
                         <div class="row mt-3 text-center tooth-row">
                             <tooth ref="tooth-55" tooth-pos='5' tooth-id='5' shape='square'/>
@@ -105,6 +111,9 @@
 
                     </div>                    
                     <desease-legend/>
+                    <div v-if='name != null' class='mt-2 mr-3 text-right'>
+                        <b-button @click="printPdf('baby')">Pobierz plik PDF</b-button>
+                    </div>
 
                 </b-card-body>
             </b-collapse>
@@ -139,6 +148,7 @@ export default {
             micOn: false,
             endMic: false,
             newCommand: 0,
+            savedPerson: null,
         }
     },
     watch: {
@@ -154,6 +164,7 @@ export default {
     },
     methods: {
         showTeethData(person) {
+            this.savedPerson = person;
             if (person == null) {
                 this.resetData();
             }
@@ -314,6 +325,48 @@ export default {
                 variant: variant,
                 solid: true,
             })
+        },
+        printPdf(teeth) {
+            if (this.savedPerson == null) {
+                this.makeToast('danger', 'Błąd', 'Przed wydrukiem dodaj osobę w formularzu');
+                return;
+            }
+            let prtHtmlDiagram = null;
+            if (teeth == 'primary') prtHtmlDiagram = document.getElementById('printPrimaryDiagram').innerHTML;
+            else prtHtmlDiagram = document.getElementById('printBabyDiagram').innerHTML;
+
+            const prtHtmlLegend = document.getElementById('printLegend').innerHTML;
+            
+            let stylesHtml = '';
+            for (const node of [...document.querySelectorAll('link[rel="stylesheet"], style')]) {
+                stylesHtml += node.outerHTML;
+            }
+
+            const WinPrint = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+
+            let time = moment(String(new Date().toISOString())).format('DD-MM-YYYY HH:mm'); 
+
+            WinPrint.document.write(`<!DOCTYPE html>
+            <html>
+            <head>
+                ${stylesHtml}
+            </head>
+            <body>
+                <h3>${this.name}</h3>
+                <h5>Pesel: ${this.savedPerson.personalDetails.pesel}</h5>
+                <label>Wygenerowano: ${time}</label>
+                <div class='mt-5'/>
+                <label class='ml-2'>Diagram zębowy:</label>
+                ${prtHtmlDiagram}
+                <div class='mt-5'/>
+                ${prtHtmlLegend}
+            </body>
+            </html>`);
+
+            WinPrint.document.close();
+            WinPrint.focus();
+            WinPrint.print();
+            // WinPrint.close();
         }
     },
     components: {
