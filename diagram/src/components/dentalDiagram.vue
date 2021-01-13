@@ -120,14 +120,26 @@
         </b-card>
     </div>
     <div class='row mt-5 ml-4'>
-        <!-- <div v-if="!micOn"> -->
         <div>
-            <b-button @click="mic()">Powiedz komendę</b-button>
+            <b-button :disabled="micOn" @click="confirmMic()">Powiedz komendę</b-button>
         </div>
-        <!-- <div v-else>
-            <b-button @click="endMic">Zakończ komunikację głosową</b-button>
+        <!-- <div class='ml-2'>
+            <b-button :disabled="!micOn" @click="endMic">Zakończ komunikację głosową</b-button>
         </div> -->
     </div>
+
+    <b-modal
+        v-model="micModal"
+        class='confirmModal'
+        @ok='mic()' 
+        :hide-header='true'
+        cancel-title='Anuluj'
+        ok-title='OK'
+        centered>
+        <div> Aby wprowadzać dane głosowo podaj odpowiednio: </div>
+        <label> NUMER ZĘBA, CZĘŚĆ ZĘBA, CHOROBĘ. </label>
+        <div> By zakończyć wczytywanie głosowe wypowiedz komendę STOP. </div>
+    </b-modal>
 
 </div>
 </template>
@@ -136,6 +148,7 @@
 import Tooth from './tooth';
 import DeseaseLegend from './deseaseLegend'
 import moment from 'moment'
+import axios from 'axios';
 export default {
     name: 'dentalDiagram',
     data() {
@@ -146,21 +159,10 @@ export default {
             oldestVersion: false,
             newestVersion: true,
             micOn: false,
-            endMic: false,
             newCommand: 0,
             savedPerson: null,
+            micModal: false,
         }
-    },
-    watch: {
-        newCommand: async function(val) {
-            if (this.micOn) {
-                await new Promise(resolve => setTimeout(resolve, 100));
-                this.mic();
-            }
-        }
-    },
-    computed:{
-
     },
     methods: {
         showTeethData(person) {
@@ -202,11 +204,15 @@ export default {
                 }
             }
         },
-        getMicCommand() {
-            var request = new XMLHttpRequest();
-            request.open('GET', 'http://127.0.0.1:5000/mic', false);
-            request.send();
-            return JSON.parse(request.response);
+        async getMicCommand() {
+            // var request = new XMLHttpRequest();
+            // request.open('GET', 'http://127.0.0.1:5000/mic', false);
+            // request.send();
+            // return JSON.parse(request.response);
+            let response = await axios
+                .get('http://127.0.0.1:5000/mic')
+                .catch(error => console.log(error))
+            return response.data;
         },
         useCommand(obj) {
             let info = 'Numer zęba: ' + obj.toothId + '\nCzęść zęba: ' + obj.toothPart + '\nChoroba: ' + obj.toothDesease;
@@ -214,48 +220,51 @@ export default {
             var ref = "tooth-" + obj.toothId;
             this.$refs[ref].setToothPartDesease(obj.toothId, obj.toothDesease, obj.toothPart);
         },
+        confirmMic() {
+            this.micModal = true;
+        },
         async mic() {
             this.micOn = true;
             this.command = '';
-            var obj = this.getMicCommand();
+            var obj = await this.getMicCommand();
             this.command = obj.command;
             console.log(obj.command);
-            if (obj.next == 0 || this.endMic) {
+            if (obj.next == 0) {
                 this.command = '';
-                this.endMic = false;
                 this.micOn = false;
                 return;
             }
             else if (obj.next == 1) {
                 console.log("id: " + obj.toothId+"  part: " + obj.toothPart + "  desease: " + obj.toothDesease);
-                await this.useCommand(obj);
-                this.newCommand++;
-                return;
+                this.useCommand(obj);
             }
             else if (obj.next == 2) {
                 console.log("Please, repeat command:")
             }
             while (obj.next == 1 || obj.next == 2) {
-                obj = this.getMicCommand();
+                obj = await this.getMicCommand();
                 this.command = obj.command;
                 console.log(obj.command);
-                if(obj.next == 0 || this.endMic){
+                if(obj.next == 0){
                     this.command = '';
-                    this.endMic = false;
                     this.micOn = false;
                     return;
                 }
                 else if (obj.next == 1) {
                     console.log("id: " + obj.toothId + "  part: " + obj.toothPart + "  desease: " + obj.toothDesease);
-                    await this.useCommand(obj);
-                    this.newCommand++;
-                    return;
+                    this.useCommand(obj);
                 }
                 else if (obj.next == 2) {
                     console.log("Please, repeat command:");
                 }
             }
         },
+        // endMic() {
+        //     const request = axios.CancelToken.source();
+        //     axios.get('http://127.0.0.1:5000/mic', { cancelToken: request.token })
+        //     request.cancel('');
+        //     this.micOn = false;
+        // },
         saveTeeth() {
             var permanentTeeth = {}
             for (var i = 1; i < 5; i++) {
