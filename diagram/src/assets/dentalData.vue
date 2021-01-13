@@ -45,12 +45,13 @@
     // ]
 
     export const DESEASES = [
-        { name: null, color: 'lavender'},
-        { name: 'wypełnienie', color: 'lightcoral'},
-        { name: 'próchnica', color: 'gold'},
-        { name: 'usunięty', color: 'skyblue'},
-        { name: 'proteza', color: 'pink'},
-        { name: 'przęsło', color: 'darkseagreen'},
-        { name: 'niewyrżnięty', color: 'silver'},
+        { name: null, displayName: 'Zdrowy', color: 'lavender'},
+        { name: 'wypełnienie', displayName: 'Wypełnienie', color: 'skyblue'},
+        { name: 'próchnica', displayName: 'Próchnica', color: 'lightcoral'},
+        { name: 'ubytek', displayName: 'Ubytek', color: 'gold'},
+        { name: 'proteza', displayName: 'Most/korona/implant', color: 'darkseagreen'},
+        { name: 'niewyrżnięty', displayName: 'Niewyrżnięty', color: 'pink'},
+        { name: 'usunięty', displayName: 'Usunięty', color: 'silver'},
+        // { name: 'przęsło', color: 'darkseagreen'},
     ]
 </script>

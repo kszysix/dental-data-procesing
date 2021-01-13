@@ -11,7 +11,7 @@
                         :style='"background-color: " + desease.color'
                         @click="clickDeseaseButton(desease.name, toothPart)"
                         button>
-                        {{ desease.name }}
+                        {{ desease.displayName }}
                     </b-list-group-item>
                 </div>
             </b-list-group>

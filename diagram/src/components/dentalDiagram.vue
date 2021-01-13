@@ -352,11 +352,12 @@ export default {
                 ${stylesHtml}
             </head>
             <body>
+                <div class='mt-5 ml-5'>
                 <h3>${this.name}</h3>
                 <h5>Pesel: ${this.savedPerson.personalDetails.pesel}</h5>
                 <label>Wygenerowano: ${time}</label>
+                </div>
                 <div class='mt-5'/>
-                <label class='ml-2'>Diagram zębowy:</label>
                 ${prtHtmlDiagram}
                 <div class='mt-5'/>
                 ${prtHtmlLegend}
