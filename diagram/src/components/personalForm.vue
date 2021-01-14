@@ -95,7 +95,7 @@
           
     </b-form>
 
-    <div class='ml-3 mt-2'>
+    <div class='ml-3 mt-2 mb-4'>
         <b-button v-on:click="showSaveModal">Zapisz dane</b-button>
         <b-button class='ml-2' @click="showResetModal">Resetuj dane</b-button>
     </div>

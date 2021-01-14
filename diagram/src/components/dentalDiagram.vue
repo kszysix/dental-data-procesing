@@ -13,7 +13,7 @@
         <b-button class='text-right' v-on:click="showVersion('1')" :disabled="newestVersion">Nowsza wersja</b-button>
     </div>
 
-    <div class='mt-2 text-right ml-3 mr-3 dental-diagram'>
+    <div class='mt-2 text-right ml-2 mr-2 dental-diagram'>
 
         <b-card class="mb-1">
             <b-card-header header-tag="header" class="p-1" role="tab">
@@ -119,7 +119,7 @@
             </b-collapse>
         </b-card>
     </div>
-    <div class='row mt-5 ml-4'>
+    <div class='row mt-5 ml-4 mb-4'>
         <div>
             <b-button :disabled="micOn" @click="confirmMic()">Powiedz komendę</b-button>
         </div>

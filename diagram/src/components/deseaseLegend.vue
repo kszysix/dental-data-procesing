@@ -8,7 +8,7 @@
                 :index='index'
                 :key="desease.id">
                 <b-list-group-item
-                    :style='"background-color: " + desease.color'>
+                    :style='"background-color: " + desease.color + "; -webkit-print-color-adjust: exact;"'>
                     {{ desease.displayName }}
                 </b-list-group-item>
             </div>
