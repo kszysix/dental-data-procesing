@@ -62,7 +62,8 @@ def mic():
 		data, fs = sf.read(filename, dtype='float32')  
 		sd.play(data, fs)
 
-		audio = r.listen(source)
+		audio = r.listen(source,timeout=10,phrase_time_limit = 5)
+
 
 		filename = 'endMic.wav'
 		data, fs = sf.read(filename, dtype='float32')  
@@ -77,14 +78,17 @@ def mic():
 	}
 
 	try:
-		command = r.recognize_google(audio,language="pl-PL")
-		print("Speech Recognition thinks you said " + command)
-		response = createCommandJson(command)
+		if(audio):
+			command = r.recognize_google(audio,language="pl-PL")
+			print("Speech Recognition thinks you said " + command)
+			response = createCommandJson(command)
 	except sr.UnknownValueError:
 	    print("Speech Recognition could not understand audio")
+	    response["next"] = 3
 	    response = json.dumps(response)
 	except sr.RequestError as e:
 	    print("Could not request results from Speech Recognition service; {0}".format(e))
+	    response["next"] = 3
 	    response = json.dumps(response)
 	
 
@@ -98,6 +102,8 @@ def mic():
 		filename = 'endMic.wav'
 		data, fs = sf.read(filename, dtype='float32')  
 		sd.play(data, fs)
+	if(response["next"] == 3):
+		response["next"] = 2
 	return response
 
 
