@@ -123,9 +123,9 @@
         <div>
             <b-button :disabled="micOn" @click="confirmMic()">Powiedz komendę</b-button>
         </div>
-        <!-- <div class='ml-2'>
+        <div class='ml-2'>
             <b-button :disabled="!micOn" @click="endMic">Zakończ komunikację głosową</b-button>
-        </div> -->
+        </div>
     </div>
 
     <b-modal
@@ -174,6 +174,7 @@ export default {
             savedPerson: null,
             micModal: false,
             ifShowOldestVersion: false,
+            idEndMic: false,
         }
     },
     methods: {
@@ -236,6 +237,7 @@ export default {
             this.micModal = true;
         },
         async mic() {
+            this.idEndMic = false;
             this.micOn = true;
             this.command = '';
             var obj = await this.getMicCommand();
@@ -254,6 +256,7 @@ export default {
                 console.log("Please, repeat command:")
             }
             while (obj.next == 1 || obj.next == 2) {
+                if (this.idEndMic) return;
                 obj = await this.getMicCommand();
                 this.command = obj.command;
                 console.log(obj.command);
@@ -271,12 +274,10 @@ export default {
                 }
             }
         },
-        // endMic() {
-        //     const request = axios.CancelToken.source();
-        //     axios.get('http://127.0.0.1:5000/mic', { cancelToken: request.token })
-        //     request.cancel('');
-        //     this.micOn = false;
-        // },
+        endMic() {
+            this.micOn = false;
+            this.idEndMic = true;
+        },
         saveTeeth() {
             var permanentTeeth = {}
             for (var i = 1; i < 5; i++) {
