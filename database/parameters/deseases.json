@@ -92,6 +92,10 @@
         {
             "translation" : "niewyrżniętych",
             "desease" : "niewyrżnięty"
+        }, 
+        {
+            "translation" : "niewyrośnięty",
+            "desease" : "niewyrżnięty"
         }
     ]
 }
