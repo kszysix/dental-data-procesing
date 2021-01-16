@@ -16,6 +16,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.5.3",
     "bootstrap-vue": "^2.18.1",
+    "moment": "^2.29.1",
     "vue": "^2.6.12",
     "vue-html-to-paper": "^1.3.1"
   },
