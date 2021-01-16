@@ -9,7 +9,7 @@
     </div>
 
     <div v-if='name != null' class='mt-2 mb-4 mr-3 text-right'>
-        <b-button class='text-right' v-on:click="showVersion('-1')" :disabled="oldestVersion">Starsza wersja</b-button>
+        <b-button class='text-right' v-on:click="showOldestVersion('-1')" :disabled="oldestVersion">Starsza wersja</b-button>
         <b-button class='text-right' v-on:click="showVersion('1')" :disabled="newestVersion">Nowsza wersja</b-button>
     </div>
 
@@ -141,6 +141,17 @@
         <div> By zakończyć wczytywanie głosowe wypowiedz komendę STOP. </div>
     </b-modal>
 
+    <b-modal
+        v-model="ifShowOldestVersion"
+        class='confirmModal'
+        @ok='showVersion("-1")' 
+        :hide-header='true'
+        cancel-title='Anuluj'
+        ok-title='OK'
+        centered>
+        <div> Niezapisane dane zostaną utracone. Wybierz OK jeśli chcesz kontynuować. </div>
+    </b-modal>
+
 </div>
 </template>
 
@@ -162,6 +173,7 @@ export default {
             newCommand: 0,
             savedPerson: null,
             micModal: false,
+            ifShowOldestVersion: false,
         }
     },
     methods: {
@@ -284,8 +296,16 @@ export default {
             }
             return { permanentTeeth: permanentTeeth, babyTeeth: babyTeeth };
         },
+        showOldestVersion(time) {
+            if (this.newestVersion) {
+                this.ifShowOldestVersion = true;
+            }
+            else {
+                this.showVersion(time);
+            }
+        },
         showVersion(time){
-            if(this.versionDate != null){
+            if(this.versionDate != null) {
                 this.$emit('showVersion', time);
             }
         },
