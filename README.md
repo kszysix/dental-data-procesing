@@ -1,5 +1,7 @@
 # README
 
+## 0. Git:
+  > Download repository
 
 ## 1. MongoDB:
 
